@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Ксения Сахарова](https://up.htmlacademy.ru/javascript/27/user/1773647).
-* Наставник: `Неизвестно`.
+* Наставник: [Arthur Litovko](https://github.com/baileys-li).
 
 ---
 
