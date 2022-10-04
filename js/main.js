@@ -1,5 +1,4 @@
 // TODO: Удалить, временные вызовы, чтобы Eslint не жаловался
-
 getRandomIntegerWithChecks(6.555, 90.4);
 getRandomFloat(5.66, 9.69);
 
@@ -10,7 +9,7 @@ getRandomFloat(5.66, 9.69);
 @returns {number} Случайное число в заданном промежутке включительно
 */
 
-function getRandomInteger (from, to) {
+function getRandomInteger(from, to) {
   const randomNumber = from + Math.random() * (to + 1 - from);
   return Math.floor(randomNumber);
 }
@@ -26,8 +25,8 @@ function getRandomIntegerWithChecks(a, b) {
   const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем, что число положительное
-  if (isNaN (resultCheck)) {
-    return resultCheck;
+  if (resultCheck === null) {
+    return NaN;
   }
 
   // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
@@ -50,7 +49,7 @@ function getRandomFloat(a, b, precision = 1) {
   const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем числа на типы
-  if (isNaN (resultCheck) || typeof precision !== 'number' || precision < 0) {
+  if (resultCheck === null || typeof precision !== 'number' || precision < 0) {
     return NaN;
   }
 
@@ -75,18 +74,18 @@ function getRandomFloat(a, b, precision = 1) {
 Функция для проверки аргументов в другой функции
  * @param {*} first Предпочтительно положительное число
  * @param {*} second Предпочтительно положительное число
- * @return {number | number []} Возвращает `NaN`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
+ * @return {null | number []} Возвращает `null`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
 */
 
 function checkFunctionArguments(first, second) {
   // Проверяем числа на типы
   if (typeof first !== 'number' || typeof second !== 'number') {
-    return NaN;
+    return null;
   }
 
   // Проверяем, что число положительное
   if (first < 0 || second < 0) {
-    return NaN;
+    return null;
   }
 
   // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
