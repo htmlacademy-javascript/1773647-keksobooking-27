@@ -1,6 +1,10 @@
-// Источник https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
+// TODO: Удалить, временные вызовы, чтобы Eslint не жаловался
+
+getRandomIntegerWithChecks(6.555, 90.4);
+getRandomFloat(5.66, 9.69);
 
 /**
+ * На основе материала {@link https://learn.javascript.ru/task/random-int-min-max| Learn JS}
 @param {number} from Целое положительное число
 @param {number} to Целое положительное число, которое больше предыдущего
 @returns {number} Случайное число в заданном промежутке включительно
@@ -13,38 +17,40 @@ function getRandomInteger (from, to) {
 
 /**
 Возвращает случайное число в заданом диапазоне, проверяет на типы и что число положительное
-@param {number} a Положительное число
-@param {number} b Положительное число
-@param {number} precision Случайное число в заданном промежутке включительно
+ * @param {*} a Предпочтительно положительное число
+ * @param {*} b Предпочтительно положительное число
+ * @param {number} Случайное целое число в заданном промежутке включительно или `Nan`, если аргументы не подходящие
 */
 
-// eslint-disable-next-line no-unused-vars
 function getRandomIntegerWithChecks(a, b) {
-  // Проверяем числа на типы
-  if (!typeof a === 'number' || typeof b === 'number') {
-    return NaN;
-  }
+  const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем, что число положительное
-  if (a < 0 || b < 0) {
-    return NaN;
+  if (isNaN (resultCheck)) {
+    return resultCheck;
   }
 
   // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
-  if (b < a) {
-    [a, b] = [b, a];
-  }
+  [a, b] = resultCheck;
 
-  a = Math.ceil(a); /** Округление значения в сторону плюс бесконечности */
-  b = Math.floor(b); /** Округлите значение в сторону минус бесконечности */
+  a = Math.ceil(a); // Округление значения в сторону плюс бесконечности
+  b = Math.floor(b); // Округлите значение в сторону минус бесконечности
 
   return getRandomInteger(a, b);
 }
 
-// eslint-disable-next-line no-unused-vars
+/**
+ * @param {*} a Предпочительно положительное число
+ * @param {*} b Предпочительно положительное число
+ * @param {*} [precision=1] Предпочительно положительное число
+ * @returns {number} Случайное число с плавающей точкой или `NaN`, если аргументы не подходящие
+ */
+
 function getRandomFloat(a, b, precision = 1) {
+  const resultCheck = checkFunctionArguments(a, b);
+
   // Проверяем числа на типы
-  if (!typeof a === 'number' || typeof b === 'number' || typeof precision === 'number') {
+  if (isNaN (resultCheck) || typeof precision !== 'number' || precision < 0) {
     return NaN;
   }
 
@@ -54,12 +60,7 @@ function getRandomFloat(a, b, precision = 1) {
   }
 
   // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
-  if (b < a) {
-    [a, b] = [b, a];
-  }
-
-  a = Math.ceil(a); /** Округление значения в сторону плюс бесконечности */
-  b = Math.floor(b); /** Округлите значение в сторону минус бесконечности */
+  [a, b] = resultCheck;
 
   // Получаем рандомное число от 0 до 1
   // Уножаем на разницу между переданными числами и прибавляем второе значение
@@ -68,4 +69,26 @@ function getRandomFloat(a, b, precision = 1) {
   // С помощью метода toFixed любого числа в JavaScript указываем требуемое количество знаков после точки.
   // Метод возвращает строку, поэтому с помощью унарного плюса превращаем её в число
   return +result.toFixed(precision);
+}
+
+/**
+Функция для проверки аргументов в другой функции
+ * @param {*} first Предпочтительно положительное число
+ * @param {*} second Предпочтительно положительное число
+ * @return {number | number []} Возвращает `NaN`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
+*/
+
+function checkFunctionArguments(first, second) {
+  // Проверяем числа на типы
+  if (typeof first !== 'number' || typeof second !== 'number') {
+    return NaN;
+  }
+
+  // Проверяем, что число положительное
+  if (first < 0 || second < 0) {
+    return NaN;
+  }
+
+  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
+  return second < first ? [first, second] : [second, first];
 }
