@@ -73,7 +73,6 @@ function getRandomFloat(a, b, precision = 1) {
 
 // Функция для строк
 function getRandomString(a, b) {
-  const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем, что число положительное
   if (a < 0 || b < 0) {
