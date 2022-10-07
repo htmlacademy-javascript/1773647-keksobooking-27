@@ -127,19 +127,19 @@ const title = [
 
 // const address; // Адрес предложения. Cоставляется из географических координат по маске {{location.lat}}, {{location.lng}}
 
-// const price; // Cтоимость. Случайное целое положительное число
+const price = getRandomFloat(0, 100000); // Cтоимость. Случайное целое положительное число
 
 const type = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
-// const rooms; // Количество комнат. Случайное целое положительное число
+const rooms = getRandomFloat(0, 10); // Количество комнат. Случайное целое положительное число
 
-// const guests; // Количество гостей, которое можно разместить. Случайное целое положительное число
+const guests = getRandomFloat(0, 15); // Количество гостей, которое можно разместить. Случайное целое положительное число
 
 const checkin = ['12:00', '13:00', '14:00']; // Одно из трёх фиксированных значений
 
 const checkout = ['12:00', '13:00', '14:00']; // Одно из трёх фиксированных значений
 
-let features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; // Массив строк — массив случайной длины из значений, которые не должны повторяться
+const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; // Массив строк — массив случайной длины из значений, которые не должны повторяться
 
 const description = [
   'Двухкомнатная квартира в кирпичном кооперативном доме с огороженной территорией.',
@@ -154,7 +154,7 @@ const photoUrlTwo = new URL('https://assets.htmlacademy.ru/content/intensive/jav
 const photoUrlThree = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg');
 const photos = [ ];
 
-const getRandomArrayElement = (elements) => elements[getRandomFloat(0, elements.length - 1)];
+// const getRandomArrayElement = (elements) => elements[getRandomFloat(0, elements.length - 1)];
 const getRandomArrayString = (elements) => elements[getRandomString(0, elements.length - 1)];
 
 const objectInformation = () => {
@@ -165,13 +165,13 @@ const objectInformation = () => {
 
   return {
     author: '', // Описывает автора
-    offer: getRandomArrayString(title) + ' ' + getRandomArrayString(type) + ' ' + getRandomArrayString(checkin) + ' ' + getRandomArrayString(checkout) + ' ' + getRandomArrayString(description), // Информация об объявлении
+    offer: getRandomArrayString(title) + ' ' + price + ' ' + getRandomArrayString(type) + ' ' + rooms + ' ' + guests + ' ' + getRandomArrayString(checkin) + ' ' + getRandomArrayString(checkout) + ' ' + getRandomArrayString(description), // Информация об объявлении
     location: randomLat + randomLng, // Mестоположение в виде географических координат
   };
 };
 
 objectInformation();
 
-const similarObjectInformation = Array.from({length: 4}, objectInformation);
+const similarObjectInformation = Array.from({length: 5}, objectInformation);
 
 console.log(similarObjectInformation);
