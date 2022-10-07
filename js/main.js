@@ -138,7 +138,7 @@ const checkin = ['12:00', '13:00', '14:00']; // Одно из трёх фикс�
 
 const checkout = ['12:00', '13:00', '14:00']; // Одно из трёх фиксированных значений
 
-const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; // Массив строк — массив случайной длины из значений, которые не должны повторяться
+// const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; // Массив строк — массив случайной длины из значений, которые не должны повторяться
 
 const description = [
   'Двухкомнатная квартира в кирпичном кооперативном доме с огороженной территорией.',
@@ -148,10 +148,10 @@ const description = [
   'Светлая, уютная квартира, окна на 3 стороны!'
 ]; // Описание помещения
 
-const photoUrlOne = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg');
-const photoUrlTwo = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg');
-const photoUrlThree = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg');
-const photos = [ ];
+// const photoUrlOne = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg');
+// const photoUrlTwo = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg');
+// const photoUrlThree = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg');
+// const photos = [ ];
 
 // const getRandomArrayElement = (elements) => elements[getRandomFloat(0, elements.length - 1)];
 const getRandomArrayString = (elements) => elements[getRandomString(0, elements.length - 1)];
@@ -164,7 +164,7 @@ const objectInformation = () => {
 
   return {
     author: '', // Описывает автора
-    offer: getRandomArrayString(title) + ' ' + price + ' ' + getRandomArrayString(type) + ' ' + rooms + ' ' + guests + ' ' + getRandomArrayString(checkin) + ' ' + getRandomArrayString(checkout) + ' ' + getRandomArrayString(description), // Информация об объявлении
+    offer: `${getRandomArrayString(title) } ${ price } ${ getRandomArrayString(type) } ${ rooms } ${ guests } ${ getRandomArrayString(checkin) } ${ getRandomArrayString(checkout) } ${ getRandomArrayString(description)}`, // Информация об объявлении
     location: randomLat + randomLng, // Mестоположение в виде географических координат
   };
 };
@@ -173,4 +173,4 @@ objectInformation();
 
 const similarObjectInformation = Array.from({length: 5}, objectInformation);
 
-console.log(similarObjectInformation);
+// console.log(similarObjectInformation);
