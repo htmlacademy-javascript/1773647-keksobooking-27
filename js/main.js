@@ -26,8 +26,8 @@ function getRandomIntegerWithChecks(a, b) {
   const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем, что число положительное
-  if (isNaN (resultCheck)) {
-    return resultCheck;
+  if (resultCheck === null) {
+    return NaN;
   }
 
   // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
@@ -94,7 +94,7 @@ getRandomString();
 Функция для проверки аргументов в другой функции
  * @param {*} first Предпочтительно положительное число
  * @param {*} second Предпочтительно положительное число
- * @return {null | number[]} Возвращает `null`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
+ * @return {null | number []} Возвращает `null`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
 */
 
 function checkFunctionArguments(first, second) {
