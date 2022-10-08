@@ -1,9 +1,12 @@
-import { getRandomInteger, getRandomFloat } from './random.js';
+import { getRandomInteger, getRandomFloat, getRandomArrayItem } from './random.js';
+import { formatNumber } from './utils.js';
 
-// const avatar; // Адрес изображения вида img/avatars/user{{xx}}.png, где {{xx}} — это число от 1 до 10. Перед однозначными числами ставится 0. Например, 01, 02...10. Адреса изображений не повторяются.
+/**
+ * @typedef {'palace'| 'flat'| 'house'| 'bungalow'| 'hotel'} HousingType
+ * @typedef {'wifi' | 'dishwasher' | 'parking' | 'washer' | 'elevator' | 'conditioner'} Feature
+ */
 
-// Информация об объявлении
-const title = [
+const TITLES = [
   'Квартира свободной планировки 174,1 м²',
   'Огромный пентхаус',
   'Апартаменты от застройщика в ЖК Voxhall',
@@ -11,55 +14,83 @@ const title = [
   'Дом под ключ с бассейн и хамамом'
 ];
 
-// const address; // Cоставляется из географических координат по маске {{location.lat}}, {{location.lng}}
+/**
+ * @type {HousingType[]}
+*/
+const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
-const price = getRandomInteger(0, 100000); // Случайное целое положительное число
+/**
+ * Случайное количество, значения не повторяются
+ * @returns {Feature[]}
+ */
+const mockFeatures = () => {
 
-const type = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+  /** @constant
+    @type {Feature} */
+  const remainFeatures = [
+    'wifi',
+    'dishwasher',
+    'parking',
+    'washer',
+    'elevator',
+    'conditioner',
+  ];
 
-const rooms = getRandomInteger(0, 10); // Случайное целое положительное число
+  const length = getRandomInteger(0, remainFeatures.length);
 
-const guests = getRandomInteger(0, 15); // Количество гостей, которое можно разместить. Случайное целое положительное число
+  return Array.from({length}, () => {
+    const randomIndex = getRandomInteger(0, remainFeatures.length - 1);
+    const feature = remainFeatures[randomIndex];
+    remainFeatures.splice(randomIndex, 1);
 
-const checkin = ['12:00', '13:00', '14:00']; // Одно из трёх фиксированных значений
+    return feature;
+  });
+};
 
-const checkout = ['12:00', '13:00', '14:00']; // Одно из трёх фиксированных значений
-
-// const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; // Массив строк — массив случайной длины из значений, которые не должны повторяться
-
-const description = [
+const DESCRIPTIONS = [
   'Двухкомнатная квартира в кирпичном кооперативном доме с огороженной территорией.',
   'Квартира после дизайнерского ремонта с использованием дорогостоящих материалов. Планировка узаконена.',
   'Функциональная планировка: кухня-гостиная, изолированная спальня, 1 раздельный СУ с ванной, лоджия.',
   'Есть все необходимое из мебели и бытовой техники.',
   'Светлая, уютная квартира, окна на 3 стороны!'
-]; // Описание помещения
+];
 
-// const photoUrlOne = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg');
-// const photoUrlTwo = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg');
-// const photoUrlThree = new URL('https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg');
-// const photos = [ ];
+/**
+ * @returns одно из загтовленный значений
+ */
+const mockPhoto = () => {
+  const URLS = ['duonguyen-8LrGtIxxa4w', 'brandon-hoogenboom-SNxQGWxZQi0', 'laire-rendall-b6kAwr1i0Iw'];
 
-// const getRandomArrayElement = (elements) => elements[getRandomFloat(0, elements.length - 1)];
-const getRandomArrayItem = function(elements) {
-  return elements[getRandomInteger(0, elements.length - 1)];
+  return `https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/${getRandomArrayItem(URLS)}.jpg`;
 };
 
-const objectInformation = function() {
+const mockAd = () => {
 
-  // Mестоположение в виде географических координат
-  const randomLat = getRandomFloat(35.65000, 35.70000); // Число с плавающей точкой — широта
-  const randomLng = getRandomFloat(139.70000, 139.80000); // Число с плавающей точкой — долгота
+  const randomLat = getRandomFloat(35.65000, 35.70000);
+  const randomLng = getRandomFloat(139.70000, 139.80000);
 
   return {
-    author: '', // Описывает автора
-    offer: `${getRandomArrayItem(title) } ${ price } ${ getRandomArrayItem(type) } ${ rooms } ${ guests } ${ getRandomArrayItem(checkin) } ${ getRandomArrayItem(checkout) } ${ getRandomArrayItem(description)}`, // Информация об объявлении
-    location: randomLat + randomLng, // Mестоположение в виде географических координат
+    author: {
+      avatar: `img/avatars/user${formatNumber(getRandomInteger(0, 10))}.png`
+    },
+    offer: {
+      title: getRandomArrayItem(TITLES),
+      address: `${randomLat}, ${randomLng}`,
+      price: getRandomInteger(10000, 900000000),
+      type: getRandomArrayItem(TYPES),
+      rooms: getRandomInteger(1, 10),
+      guests: getRandomInteger(1, 15),
+      checkin: `${getRandomInteger(12, 14)}:00`,
+      checkout: `${getRandomInteger(12, 14)}:00`,
+      description: getRandomArrayItem(DESCRIPTIONS),
+      photos: Array.from({length:getRandomInteger(0, 10)}, mockPhoto),
+      features: mockFeatures()
+    },
+    location:{
+      lat: randomLat,
+      lng: randomLng
+    },
   };
 };
 
-objectInformation();
-
-const similarObjectInformation = Array.from({length: 5}, objectInformation);
-
-// console.log(similarObjectInformation);
+Array.from({length: 10 }, mockAd);

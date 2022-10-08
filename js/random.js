@@ -5,10 +5,32 @@
 @returns {number} Случайное число в заданном промежутке включительно
 */
 
-export function getRandomInteger (from, to) {
+export const getRandomInteger = (from, to) => {
   const randomNumber = from + Math.random() * (to + 1 - from);
   return Math.floor(randomNumber);
-}
+};
+
+/**
+Функция для проверки аргументов в другой функции
+ * @param {*} first Предпочтительно положительное число
+ * @param {*} second Предпочтительно положительное число
+ * @return {null | number []} Возвращает `null`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
+*/
+
+export const checkFunctionArguments = (first, second) => {
+  // Проверяем числа на типы
+  if (typeof first !== 'number' || typeof second !== 'number') {
+    return null;
+  }
+
+  // Проверяем, что число положительное
+  if (first < 0 || second < 0) {
+    return null;
+  }
+
+  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
+  return second < first ? [first, second] : [second, first];
+};
 
 /**
 Возвращает случайное число в заданом диапазоне, проверяет на типы и что число положительное
@@ -16,8 +38,7 @@ export function getRandomInteger (from, to) {
  * @param {*} b Предпочтительно положительное число
  * @param {number} Случайное целое число в заданном промежутке включительно или `Nan`, если аргументы не подходящие
 */
-
-function getRandomIntegerWithChecks(a, b) {
+export const getRandomIntegerWithChecks = (a, b) => {
   const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем, что число положительное
@@ -32,9 +53,7 @@ function getRandomIntegerWithChecks(a, b) {
   b = Math.floor(b); // Округлите значение в сторону минус бесконечности
 
   return getRandomInteger(a, b);
-}
-
-getRandomIntegerWithChecks(); // TODO: Удалить, временные вызовы, чтобы Eslint не жаловался
+};
 
 /**
  * @param {*} a Предпочительно положительное число
@@ -43,7 +62,7 @@ getRandomIntegerWithChecks(); // TODO: Удалить, временные выз
  * @returns {number} Случайное число с плавающей точкой или `NaN`, если аргументы не подходящие
  */
 
-export function getRandomFloat(a, b, precision = 1) {
+export const getRandomFloat = (a, b, precision = 1) => {
   const resultCheck = checkFunctionArguments(a, b);
 
   // Проверяем числа на типы
@@ -66,26 +85,12 @@ export function getRandomFloat(a, b, precision = 1) {
   // С помощью метода toFixed любого числа в JavaScript указываем требуемое количество знаков после точки.
   // Метод возвращает строку, поэтому с помощью унарного плюса превращаем её в число
   return +result.toFixed(precision);
-}
+};
+
 
 /**
-Функция для проверки аргументов в другой функции
- * @param {*} first Предпочтительно положительное число
- * @param {*} second Предпочтительно положительное число
- * @return {null | number []} Возвращает `null`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
-*/
-
-export function checkFunctionArguments(first, second) {
-  // Проверяем числа на типы
-  if (typeof first !== 'number' || typeof second !== 'number') {
-    return null;
-  }
-
-  // Проверяем, что число положительное
-  if (first < 0 || second < 0) {
-    return null;
-  }
-
-  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
-  return second < first ? [first, second] : [second, first];
-}
+ * @template Type
+ * @param {Type[]} elements
+ * @returns {Type} случайный элемент из переданного массива
+ */
+export const getRandomArrayItem = (elements) => elements[getRandomInteger(0, elements.length - 1)];
