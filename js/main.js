@@ -1,93 +1,96 @@
-// TODO: Удалить, временные вызовы, чтобы Eslint не жаловался
-getRandomIntegerWithChecks(6.555, 90.4);
-getRandomFloat(5.66, 9.69);
+import { getRandomInteger, getRandomFloat, getRandomArrayItem } from './random.js';
+import { formatNumber } from './utils.js';
 
 /**
- * На основе материала {@link https://learn.javascript.ru/task/random-int-min-max| Learn JS}
-@param {number} from Целое положительное число
-@param {number} to Целое положительное число, которое больше предыдущего
-@returns {number} Случайное число в заданном промежутке включительно
-*/
-
-function getRandomInteger(from, to) {
-  const randomNumber = from + Math.random() * (to + 1 - from);
-  return Math.floor(randomNumber);
-}
-
-/**
-Возвращает случайное число в заданом диапазоне, проверяет на типы и что число положительное
- * @param {*} a Предпочтительно положительное число
- * @param {*} b Предпочтительно положительное число
- * @param {number} Случайное целое число в заданном промежутке включительно или `Nan`, если аргументы не подходящие
-*/
-
-function getRandomIntegerWithChecks(a, b) {
-  const resultCheck = checkFunctionArguments(a, b);
-
-  // Проверяем, что число положительное
-  if (resultCheck === null) {
-    return NaN;
-  }
-
-  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
-  [a, b] = resultCheck;
-
-  a = Math.ceil(a); // Округление значения в сторону плюс бесконечности
-  b = Math.floor(b); // Округлите значение в сторону минус бесконечности
-
-  return getRandomInteger(a, b);
-}
-
-/**
- * @param {*} a Предпочительно положительное число
- * @param {*} b Предпочительно положительное число
- * @param {*} [precision=1] Предпочительно положительное число
- * @returns {number} Случайное число с плавающей точкой или `NaN`, если аргументы не подходящие
+ * @typedef {'palace'| 'flat'| 'house'| 'bungalow'| 'hotel'} HousingType
+ * @typedef {'wifi' | 'dishwasher' | 'parking' | 'washer' | 'elevator' | 'conditioner'} Feature
  */
 
-function getRandomFloat(a, b, precision = 1) {
-  const resultCheck = checkFunctionArguments(a, b);
-
-  // Проверяем числа на типы
-  if (resultCheck === null || typeof precision !== 'number' || precision < 0) {
-    return NaN;
-  }
-
-  // Проверяем, что число положительное
-  if (a < 0 || b < 0 || precision < 0) {
-    return NaN;
-  }
-
-  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
-  [a, b] = resultCheck;
-
-  // Получаем рандомное число от 0 до 1
-  // Уножаем на разницу между переданными числами и прибавляем второе значение
-  const result = b + Math.random() * (a - b);
-
-  // С помощью метода toFixed любого числа в JavaScript указываем требуемое количество знаков после точки.
-  // Метод возвращает строку, поэтому с помощью унарного плюса превращаем её в число
-  return +result.toFixed(precision);
-}
+const TITLES = [
+  'Квартира свободной планировки 174,1 м²',
+  'Огромный пентхаус',
+  'Апартаменты от застройщика в ЖК Voxhall',
+  'Апартаменты-студия 26,9 м²',
+  'Дом под ключ с бассейн и хамамом'
+];
 
 /**
-Функция для проверки аргументов в другой функции
- * @param {*} first Предпочтительно положительное число
- * @param {*} second Предпочтительно положительное число
- * @return {null | number []} Возвращает `null`, если аргументы не числа или меньше нуля, а так же массив исходных значений по возрастанию
+ * @type {HousingType[]}
 */
+const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
-function checkFunctionArguments(first, second) {
-  // Проверяем числа на типы
-  if (typeof first !== 'number' || typeof second !== 'number') {
-    return null;
-  }
+/**
+ * Случайное количество, значения не повторяются
+ * @returns {Feature[]}
+ */
+const mockFeatures = () => {
 
-  // Проверяем, что число положительное
-  if (first < 0 || second < 0) {
-    return null;
-  }
+  /** @constant
+    @type {Feature} */
+  const remainFeatures = [
+    'wifi',
+    'dishwasher',
+    'parking',
+    'washer',
+    'elevator',
+    'conditioner',
+  ];
 
-  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
-  return second < first ? [first, second] : [second, first];
-}
+  const length = getRandomInteger(0, remainFeatures.length);
+
+  return Array.from({length}, () => {
+    const randomIndex = getRandomInteger(0, remainFeatures.length - 1);
+    const feature = remainFeatures[randomIndex];
+    remainFeatures.splice(randomIndex, 1);
+
+    return feature;
+  });
+};
+
+const DESCRIPTIONS = [
+  'Двухкомнатная квартира в кирпичном кооперативном доме с огороженной территорией.',
+  'Квартира после дизайнерского ремонта с использованием дорогостоящих материалов. Планировка узаконена.',
+  'Функциональная планировка: кухня-гостиная, изолированная спальня, 1 раздельный СУ с ванной, лоджия.',
+  'Есть все необходимое из мебели и бытовой техники.',
+  'Светлая, уютная квартира, окна на 3 стороны!'
+];
+
+/**
+ * @returns одно из загтовленный значений
+ */
+const mockPhoto = () => {
+  const URLS = ['duonguyen-8LrGtIxxa4w', 'brandon-hoogenboom-SNxQGWxZQi0', 'laire-rendall-b6kAwr1i0Iw'];
+
+  return `https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/${getRandomArrayItem(URLS)}.jpg`;
+};
+
+const mockAd = () => {
+
+  const randomLat = getRandomFloat(35.65000, 35.70000);
+  const randomLng = getRandomFloat(139.70000, 139.80000);
+
+  return {
+    author: {
+      avatar: `img/avatars/user${formatNumber(getRandomInteger(0, 10))}.png`
+    },
+    offer: {
+      title: getRandomArrayItem(TITLES),
+      address: `${randomLat}, ${randomLng}`,
+      price: getRandomInteger(10000, 900000000),
+      type: getRandomArrayItem(TYPES),
+      rooms: getRandomInteger(1, 10),
+      guests: getRandomInteger(1, 15),
+      checkin: `${getRandomInteger(12, 14)}:00`,
+      checkout: `${getRandomInteger(12, 14)}:00`,
+      description: getRandomArrayItem(DESCRIPTIONS),
+      photos: Array.from({length:getRandomInteger(0, 10)}, mockPhoto),
+      features: mockFeatures()
+    },
+    location:{
+      lat: randomLat,
+      lng: randomLng
+    },
+  };
+};
+
+Array.from({length: 10 }, mockAd);
