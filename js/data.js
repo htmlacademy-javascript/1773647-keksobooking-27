@@ -56,7 +56,7 @@ const DESCRIPTIONS = [
 ];
 
 /**
- * @returns одно из загтовленный значений
+ * @returns одно из заготовленных значений
  */
 const mockPhoto = () => {
   const URLS = ['duonguyen-8LrGtIxxa4w', 'brandon-hoogenboom-SNxQGWxZQi0', 'laire-rendall-b6kAwr1i0Iw'];
@@ -64,14 +64,14 @@ const mockPhoto = () => {
   return `https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/${getRandomArrayItem(URLS)}.jpg`;
 };
 
-const mockAd = () => {
+const mockAd = (_, index) => {
 
   const randomLat = getRandomFloat(35.65000, 35.70000);
   const randomLng = getRandomFloat(139.70000, 139.80000);
 
   return {
     author: {
-      avatar: `img/avatars/user${formatNumber(getRandomInteger(0, 10))}.png`
+      avatar: `img/avatars/user${formatNumber((index + 1))}.png`
     },
     offer: {
       title: getRandomArrayItem(TITLES),
