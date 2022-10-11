@@ -93,4 +93,4 @@ const mockAd = (_, index) => {
   };
 };
 
-Array.from({length: 10 }, mockAd);
+export default mockAd;
