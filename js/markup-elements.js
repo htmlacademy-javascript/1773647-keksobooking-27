@@ -51,8 +51,8 @@ for( const {offer, author} of photoMocks) {
   featuresList.textContent = '';
   for (const feature of offer.features) {
     const featureElement = document.createElement('li');
-    featureElement.classList.add('.popup__feature');
-    featureElement.classList.add(`.popup__feature--${feature}`);
+    featureElement.classList.add('popup__feature');
+    featureElement.classList.add(`popup__feature--${feature}`);
     featuresList.append(featureElement);
   }
 
