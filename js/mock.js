@@ -1,6 +1,8 @@
 import { getRandomInteger, getRandomFloat, getRandomArrayItem } from './random.js';
 import { formatNumber } from './utils.js';
 
+const AMOUT_OF_ADS = 10;
+
 /**
  * @typedef {'palace'| 'flat'| 'house'| 'bungalow'| 'hotel'} HousingType
  * @typedef {'wifi' | 'dishwasher' | 'parking' | 'washer' | 'elevator' | 'conditioner'} Feature
@@ -59,12 +61,12 @@ const DESCRIPTIONS = [
  * @returns одно из заготовленных значений
  */
 const mockPhoto = () => {
-  const URLS = ['duonguyen-8LrGtIxxa4w', 'brandon-hoogenboom-SNxQGWxZQi0', 'laire-rendall-b6kAwr1i0Iw'];
+  const URLS = ['duonguyen-8LrGtIxxa4w', 'brandon-hoogenboom-SNxQGWxZQi0', 'claire-rendall-b6kAwr1i0Iw'];
 
   return `https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/${getRandomArrayItem(URLS)}.jpg`;
 };
 
-const mockAd = (_, index) => {
+export const mockAd = (_, index) => {
 
   const randomLat = getRandomFloat(35.65000, 35.70000);
   const randomLng = getRandomFloat(139.70000, 139.80000);
@@ -76,9 +78,9 @@ const mockAd = (_, index) => {
     offer: {
       title: getRandomArrayItem(TITLES),
       address: `${randomLat}, ${randomLng}`,
-      price: getRandomInteger(10000, 900000000),
+      price: getRandomInteger(500, 9000),
       type: getRandomArrayItem(TYPES),
-      rooms: getRandomInteger(1, 10),
+      rooms: getRandomInteger(1, 5),
       guests: getRandomInteger(1, 15),
       checkin: `${getRandomInteger(12, 14)}:00`,
       checkout: `${getRandomInteger(12, 14)}:00`,
@@ -93,4 +95,4 @@ const mockAd = (_, index) => {
   };
 };
 
-export default mockAd;
+export const photoMocks = Array.from({length: AMOUT_OF_ADS}, mockAd);
