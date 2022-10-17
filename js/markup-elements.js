@@ -13,11 +13,35 @@ const houseTypeToString = {
 };
 
 /**
- * @param {Element} cardElement;
- * @param {String} photos;
+ * @param {Element} card Элемент клонирования карточки
+ * @param {import ('./mock.js').Feature[]} features Массив преимуществ
+*/
+
+const markUpFeatures = (card, features) => {
+  const featuresList = card.querySelector('.popup__features');
+
+  if(features.length === 0) {
+    return featuresList.remove();
+  }
+
+  featuresList.textContent = '';
+  for (const feature of features) {
+    const featureElement = document.createElement('li');
+    featureElement.classList.add('popup__feature');
+    featureElement.classList.add(`popup__feature--${feature}`);
+
+    featuresList.append(featureElement);
+  }
+};
+
+/**
+ * @param {Element} cardElement
+ * @param {String[]} photos
 */
 const markUpPhotos = (cardElement, photos) => {
+
   /** @type {Element} */
+
   const photoWrapper = cardElement.querySelector('.popup__photos');
   const photoTemplate = cardElement.querySelector('.popup__photo');
   photoWrapper.removeChild(photoTemplate);
@@ -27,7 +51,9 @@ const markUpPhotos = (cardElement, photos) => {
   }
 
   for( const photo of photos){
-    /** @type {HTMLIFrameElement} */
+
+    /** @type {HTMLImageElement} */
+
     const photoElement = photoTemplate.cloneNode();
     photoElement.src = photo;
     photoWrapper.append(photoElement);
@@ -35,6 +61,7 @@ const markUpPhotos = (cardElement, photos) => {
 };
 
 for( const {offer, author} of photoMocks) {
+
   const cardElement = cardTemplate.cloneNode(true);
 
   cardElement.querySelector('.popup__title').textContent = offer.title;
@@ -43,18 +70,10 @@ for( const {offer, author} of photoMocks) {
   cardElement.querySelector('.popup__type').textContent = houseTypeToString[offer.type];
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  markUpFeatures(cardElement, offer.features);
   cardElement.querySelector('.popup__description').textContent = offer.description;
   markUpPhotos(cardElement, offer.photos);
   cardElement.querySelector('.popup__avatar').src = author.avatar;
-
-  const featuresList = cardElement.querySelector('.popup__features');
-  featuresList.textContent = '';
-  for (const feature of offer.features) {
-    const featureElement = document.createElement('li');
-    featureElement.classList.add('popup__feature');
-    featureElement.classList.add(`popup__feature--${feature}`);
-    featuresList.append(featureElement);
-  }
 
   cardFragment.append(cardElement);
 }
