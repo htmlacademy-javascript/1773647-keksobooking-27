@@ -1,3 +1,2 @@
-import mockAd from './mock.js';
-
-Array.from({length: 10 }, mockAd);
+import './markup-elements.js';
+import './page-states.js';
