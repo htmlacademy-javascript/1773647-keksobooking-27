@@ -1,58 +1,73 @@
+const validationMessage = {
+  REQUIRED: 'Обязательное поле',
+  LENGTH: 'От 30 до 100 символов',
+  MAX_PRICE: 'Максимальное значение - 100 000',
+};
+
+/** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
 
+const titleDataset = adForm.elements.title.dataset;
+
+titleDataset.pristineRequiredMessege = validationMessage.REQUIRED;
+titleDataset.pristineMinlengthMessege = validationMessage.LENGTH;
+titleDataset.pristineMaxlengthMessege = validationMessage.LENGTH;
+
+/** @type {HTMLInputElement} */
+const priceInput = adForm.price;
+const priceDataset = priceInput.dataset;
+
+/** @type {HTMLSelectElement} */
+const typeSelect = adForm.elements.type;
+
+priceDataset.pristineRequiredMessege = validationMessage.REQUIRED;
+priceDataset.pristineMaxMessege = validationMessage.MAX_PRICE;
+
+const typeToMinPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+const updatePriceMinValue = () => {
+  const minPrice = typeToMinPrice[typeSelect.value];
+  priceInput.min = minPrice;
+  priceInput.placeholder = minPrice;
+  priceDataset.pristineMinMessege = `Минимальная цена ${typeToMinPrice}`;
+};
+
+updatePriceMinValue();
+
 const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__label', // Элемент, на который будут добавляться классы
+  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
   errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'ad-form__element--valid', // Класс, обозначающий валидное поле
   errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
   errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
   errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
 });
 
-//Проверяем на валидность заголовок
-const validateTitle = (value) => value.length >= 30 && value.length >= 100;
+const roomsSelect = adForm.elements.rooms;
+const capacitySelect = adForm.elements.capacity;
 
-pristine.addValidator(adForm.querySelector('#title'), validateTitle, 'От 30 до 100 символов');
-
-// Проверяем на валидность на количество комнат и количество мест
-const roomField = adForm.querySelector('#room_number');
-
-const maxAmount = {
-  1 : 1, // 1 комната — «для 1 гостя»;
-  2 : 2, // 2 комнаты — «для 2 гостей» или «для 1 гостя»;
-  3 : 3, // 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
-  100 : 0, // 100 комнат — «не для гостей».
+const roomsToCapacity = {
+  '1': new Set(['1']),
+  '2': new Set(['2', '1']),
+  '3': new Set(['3', '2', '1']),
+  '100': new Set(['0']),
 };
 
-const validateAmount = (value) => {
-  const rooms = adForm.querySelector('[name="rooms"]');
-  return value.length <= maxAmount[rooms.value];
-};
+pristine.addValidator(capacitySelect, (value) => {
+  const roomAmount = roomsSelect.value;
+  return roomsToCapacity[roomAmount].has(value);
+},'Неверное количество гостей');
 
-const getAmountErrorMessage = () => {
-  const rooms = adForm.querySelector('[name="rooms"]');
-  return `Не больше ${maxAmount[rooms.value]} гостей в комнату`;
-};
-
-const capacityField = adForm.querySelector('#capacity');
-const settlementOption = {
-  '1 комната': 'для 1 гостя',
-  '2 комнаты': ['для 2 гостей', 'для 1 гостя'],
-  '3 комнаты': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
-  '100 комнат': 'не для гостей',
-};
-
-const validateCapacity = () => settlementOption[capacityField.value].includes[roomField.value];
-
-const getValidationErrorMessage = () => `
-  ${capacityField.value}
-  ${roomField.value}
-  ${capacityField.value === 'Количество' ? 'возможно' : 'невозможно'}`;
-
-pristine.addValidator(roomField, validateAmount, getAmountErrorMessage, validateCapacity, getValidationErrorMessage);
-pristine.addValidator(capacityField,validateCapacity, getValidationErrorMessage);
+typeSelect.addEventListener('input', () => {
+  updatePriceMinValue();
+  pristine.reset();
+});
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
 });
