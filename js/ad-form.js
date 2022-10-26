@@ -40,6 +40,17 @@ const updatePriceMinValue = () => {
 
 updatePriceMinValue();
 
+const timeinSelect = adForm.elements.timein;
+const timeoutSelect = adForm.elements.timeout;
+
+timeinSelect.addEventListener('change', () => {
+  timeoutSelect.value = timeinSelect.value;
+});
+
+timeoutSelect.addEventListener('change', () => {
+  timeinSelect.value = timeoutSelect.value;
+});
+
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
   errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
