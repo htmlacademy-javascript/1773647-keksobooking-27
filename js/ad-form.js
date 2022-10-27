@@ -7,6 +7,15 @@ const validationMessage = {
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
 
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
+  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
+  successClass: 'ad-form__element--invalid',
+  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
+  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
+  errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
+});
+
 const titleDataset = adForm.elements.title.dataset;
 
 titleDataset.pristineRequiredMessege = validationMessage.REQUIRED;
@@ -35,7 +44,7 @@ const updatePriceMinValue = () => {
   const minPrice = typeToMinPrice[typeSelect.value];
   priceInput.min = minPrice;
   priceInput.placeholder = minPrice;
-  priceDataset.pristineMinMessege = `Минимальная цена ${typeToMinPrice}`;
+  priceDataset.pristineMinMessege = `Минимальная цена ${minPrice}`;
 };
 
 updatePriceMinValue();
@@ -49,14 +58,6 @@ timeinSelect.addEventListener('change', () => {
 
 timeoutSelect.addEventListener('change', () => {
   timeinSelect.value = timeoutSelect.value;
-});
-
-const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
-  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
 });
 
 const roomsSelect = adForm.elements.rooms;
