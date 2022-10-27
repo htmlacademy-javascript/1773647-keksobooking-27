@@ -10,17 +10,22 @@ const adForm = document.querySelector('.ad-form');
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
   errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
   errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
   errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
   errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
 });
 
-const titleDataset = adForm.elements.title.dataset;
+// const titleDataset = adForm.elements.title.dataset;
 
-titleDataset.pristineRequiredMessege = validationMessage.REQUIRED;
-titleDataset.pristineMinlengthMessege = validationMessage.LENGTH;
-titleDataset.pristineMaxlengthMessege = validationMessage.LENGTH;
+// titleDataset.pristineRequiredMessege = validationMessage.REQUIRED;
+// titleDataset.pristineMinlengthMessege = validationMessage.LENGTH;
+// titleDataset.pristineMaxlengthMessege = validationMessage.LENGTH;
+
+// const validateTitle = (value) => value.length >= 30 && value.length >= 100;
+
+// pristine.addValidator(validateTitle, validationMessage.LENGTH);
+
 
 /** @type {HTMLInputElement} */
 const priceInput = adForm.price;
@@ -30,7 +35,7 @@ const priceDataset = priceInput.dataset;
 const typeSelect = adForm.elements.type;
 
 priceDataset.pristineRequiredMessege = validationMessage.REQUIRED;
-priceDataset.pristineMaxMessege = validationMessage.MAX_PRICE;
+// priceDataset.pristineMaxMessege = validationMessage.MAX_PRICE;
 
 const typeToMinPrice = {
   bungalow: 0,
@@ -39,6 +44,11 @@ const typeToMinPrice = {
   house: 5000,
   palace: 10000,
 };
+
+pristine.addValidator(priceInput, (value) => {
+  const valuePrice = Number(value);
+  return valuePrice > 100000;
+}, validationMessage.MAX_PRICE);
 
 const updatePriceMinValue = () => {
   const minPrice = typeToMinPrice[typeSelect.value];
