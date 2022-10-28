@@ -7,6 +7,15 @@ const validationMessage = {
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
 
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
+  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
+  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
+  errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
+});
+
 const {
   title: {dataset: titleDataset},
   price: priceInput,
@@ -56,15 +65,6 @@ timeInSelect.addEventListener('change', () => {
 
 timeoutSelect.addEventListener('change', () => {
   timeInSelect.value = timeoutSelect.value;
-});
-
-const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
-  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'ad-form__element--valid',
-  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
 });
 
 pristine.addValidator(capacitySelect, (value) => {
