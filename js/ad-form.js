@@ -63,7 +63,7 @@ const pristine = new Pristine(adForm, PRISTINE_OPTIONS);
 pristine.addValidator(capacitySelect, (value) => {
   const roomAmount = roomsSelect.value;
   return roomsToCapacity[+roomAmount].has(value);
-}, (value) => `Для ${roomsSelect.value} комнат допустимо гостей ${value}`);
+}, () => `Для ${roomsSelect.value} комнат не допустимо гостей ${capacitySelect.value}`);
 
 const checkMinPrice = (value) => value < typeToMinPrice[typeSelect.value];
 const showMinPriceMessage = () => `Минимальная цена ${typeToMinPrice[typeSelect.value]}`;
