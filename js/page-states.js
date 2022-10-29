@@ -27,4 +27,3 @@ const switchAdFormState = (isDisable = true) => {
 };
 
 export{switchAdFormState};
-
