@@ -1,3 +1,12 @@
+const PRISTINE_OPTIONS = {
+  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
+  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
+  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
+  errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
+};
+
 const validationMessage = {
   REQUIRED: 'Обязательное поле',
   LENGTH: 'От 30 до 100 символов',
@@ -6,15 +15,6 @@ const validationMessage = {
 
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
-
-const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
-  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'ad-form__element--valid',
-  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'text-help' // Класс для элемента с текстом ошибки
-});
 
 const {
   title: {dataset: titleDataset},
@@ -50,15 +50,6 @@ const roomsToCapacity = {
   '100': new Set(['0']),
 };
 
-const updatePriceMinValue = () => {
-  const minPrice = typeToMinPrice[typeSelect.value];
-  priceInput.min = minPrice;
-  priceInput.placeholder = minPrice;
-  priceDataset.pristineMinMessage = `Минимальная цена ${minPrice}`;
-};
-
-updatePriceMinValue();
-
 timeInSelect.addEventListener('change', () => {
   timeoutSelect.value = timeInSelect.value;
 });
@@ -67,15 +58,19 @@ timeoutSelect.addEventListener('change', () => {
   timeInSelect.value = timeoutSelect.value;
 });
 
+const pristine = new Pristine(adForm, PRISTINE_OPTIONS);
+
 pristine.addValidator(capacitySelect, (value) => {
   const roomAmount = roomsSelect.value;
-  return roomsToCapacity[roomAmount].has(value);
-},'Неверное количество гостей');
+  return roomsToCapacity[+roomAmount].has(value);
+}, (value) => `Для ${roomsSelect.value} комнат допустимо гостей ${value}`);
 
-typeSelect.addEventListener('input', () => {
-  updatePriceMinValue();
-  pristine.reset();
-});
+const checkMinPrice = (value) => value < typeToMinPrice[typeSelect.value];
+const showMinPriceMessage = () => `Минимальная цена ${typeToMinPrice[typeSelect.value]}`;
+
+pristine.addValidator (priceInput, checkMinPrice, showMinPriceMessage);
+
+typeSelect.addEventListener('input', () => pristine.validate(priceInput));
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
