@@ -1,32 +1,29 @@
-// const blockedForm = () => {
-//   const adForm = document.querySelector('.ad-form');
-//   const mapFilters = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
+const filtersForm = document.querySelector('.map__filters');
 
-//   adForm.classList.add('ad-form--disabled');
-//   mapFilters.classList.add('map__filters--disabled');
+/**
+ * @param {string} tag
+ * @param {HTMLFormElement} form
+ * @param {boolean} [isDisable = true]
+ */
 
-//   const elementsInput = adForm.getElementsByTagName('input');
-//   for (let i = 0; i < elementsInput.length; i++) {
-//     elementsInput[i].setAttribute('disabled', true);
-//   }
+const disableElementForm = (tag, form, isDisable = true) => {
+  const elements = form.querySelectorAll(tag);
 
-//   const selectForm = adForm.getElementsByTagName('select');
-//   for (let i = 0; i < selectForm.length; i++) {
-//     selectForm[i].setAttribute('disabled', true);
-//   }
+  for (const element of elements) {
+    element.disabled = isDisable;
+  }
+};
 
-//   const elementsDescription = adForm.querySelector('#description');
-//   elementsDescription.setAttribute('disabled', true);
+const DISABLED_CLASSES = ['ad-form--disabled', 'map__filters--disabled'];
 
-//   const selectMapFilters = mapFilters.getElementsByTagName('select');
-//   for (let i = 0; i < selectMapFilters.length; i++) {
-//     selectMapFilters[i].setAttribute('disabled', true);
-//   }
+const switchAdFormState = (isDisable = true) => {
+  [adForm, filtersForm].forEach((form, index) => {
+    form.classList.toggle(DISABLED_CLASSES[index], isDisable);
+    disableElementForm('fieldset', form, isDisable);
+  });
 
-//   const mapFiltersInput = mapFilters.getElementsByTagName('input');
-//   for (let i = 0; i < mapFiltersInput.length; i++) {
-//     mapFiltersInput[i].setAttribute('disabled', true);
-//   }
-// };
+  disableElementForm('select', filtersForm, isDisable);
+};
 
-// blockedForm();
+export{switchAdFormState};
