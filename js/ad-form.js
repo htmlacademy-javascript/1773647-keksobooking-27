@@ -24,6 +24,7 @@ const {
   timeout: timeoutSelect,
   rooms: roomsSelect,
   capacity: capacitySelect,
+  address: addressSelect,
 } = adForm.elements;
 
 const priceDataset = priceInput.dataset;
@@ -31,6 +32,8 @@ const priceDataset = priceInput.dataset;
 titleDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 titleDataset.pristineMinlengthMessage = validationMessage.LENGTH;
 titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
+
+addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
 
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
