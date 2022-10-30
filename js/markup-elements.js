@@ -1,5 +1,5 @@
 import {photoMocks} from './mock.js';
-import { getRandomArrayItem } from './random.js';
+// import { getRandomArrayItem } from './random.js';
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const cardFragment = document.createDocumentFragment();
@@ -78,6 +78,6 @@ for( const {offer, author} of photoMocks) {
   cardFragment.append(cardElement);
 }
 
-const canvasElement = document.querySelector('#map-canvas');
+// const canvasElement = document.querySelector('#map-canvas');
 
-canvasElement.append(getRandomArrayItem(cardFragment.childNodes));
+// canvasElement.append(getRandomArrayItem(cardFragment.childNodes));
