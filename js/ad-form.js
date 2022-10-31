@@ -34,6 +34,9 @@ titleDataset.pristineMinlengthMessage = validationMessage.LENGTH;
 titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
 
 addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
+export const getCoordinates = (location) => {
+  addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
+};
 
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
