@@ -1,5 +1,6 @@
 import { getCoordinates } from './ad-form.js';
-import { mockAd } from './mock.js';
+// import { mockAd } from './mock.js';
+import { getCard } from './markup-elements.js';
 import {switchAdFormState} from './page-states.js';
 
 const map = L.map('map-canvas')
@@ -69,8 +70,10 @@ const addMarkers = (point) => {
     );
     marker
       .addTo(markerGroup)
-      .bindPopup(mockAd(element));
+      .bindPopup(getCard(element));
   });
 };
+
+console.log(addMarkers());
 
 export {addMarkers};
