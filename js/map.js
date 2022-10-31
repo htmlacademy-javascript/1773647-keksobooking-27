@@ -74,6 +74,6 @@ const addMarkers = (point) => {
   });
 };
 
-console.log(addMarkers());
+// console.log(addMarkers());
 
 export {addMarkers};
