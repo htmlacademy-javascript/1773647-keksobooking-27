@@ -1,7 +1,7 @@
 import { getRandomInteger, getRandomFloat, getRandomArrayItem } from './random.js';
 import { formatNumber } from './utils.js';
 
-const AMOUT_OF_ADS = 10;
+const AMOUNT_OF_ADS = 10;
 
 /**
  * @typedef {'palace'| 'flat'| 'house'| 'bungalow'| 'hotel'} HousingType
@@ -95,4 +95,4 @@ export const mockAd = (_, index) => {
   };
 };
 
-export const photoMocks = Array.from({length: AMOUT_OF_ADS}, mockAd);
+export const adMocks = Array.from({length: AMOUNT_OF_ADS}, mockAd);

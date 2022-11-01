@@ -1,24 +1,14 @@
 import { getCoordinates } from './ad-form.js';
-// import { mockAd } from './mock.js';
-import { getCard } from './markup-elements.js';
-import {switchAdFormState} from './page-states.js';
+import { adMocks } from './mock.js';
+import { switchAdFormState } from './page-states.js';
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    // console.log('Карта инициализирована');
-    switchAdFormState(false);
-  })
-  .setView({
-    lat: 35.42,
-    lng: 139.36,
-  }, 11);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map); // Маркер похожих объявлений
+const OFFERS_COUNT = 10;
+const CENTER_MAP = {
+  lat: 35.682339,
+  lng: 139.75318,
+};
 
 // Главная иконка маркера на карте
 const mainPinIcon = L.icon({
@@ -27,6 +17,15 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
+// Главный маркер на карте
+const mainPinMarker = L.marker(
+  { CENTER_MAP},
+  {
+    draggable: true, // Метку можно передвигать по карте
+    icon: mainPinIcon,
+  }
+);
+
 // Виторостепенный маркер на карте
 const pinIcon = L.icon({
   iconUrl: './img/pin.svg.',
@@ -34,19 +33,17 @@ const pinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-// Главный маркер на карте
-const mainPinMarker = L.marker(
-  {
-    lat: 35.68948,
-    lng: 139.69170,
-  },
-  {
-    draggable: true, // Метку можно передвигать по карте
-    icon: mainPinIcon,
-  }
-);
+const initMap = (coordinate) => {
+  map.setView(coordinate, 10);
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },).addTo(map);
 
-mainPinMarker.addTo(map);
+  mainPinMarker.setLatLng(coordinate);
+  mainPinMarker.addTo(map);
+};
 
 // Запись координат главного маркера для поля формы - Адрес
 mainPinMarker.on('moveend', (evt) => {
@@ -54,26 +51,36 @@ mainPinMarker.on('moveend', (evt) => {
   getCoordinates(coordinatesMarker);
 });
 
-// Маркер похожих объявлений
-const markerGroup = L.layerGroup().addTo(map);
+// for(const ad of adMocks) {
+//   console.log(ad.location);
+// }
 
-const addMarkers = (point) => {
-  point.forEach((element) => {
+// Функция для создания второстепенных маркеров
+const createAdPinMarker = (locations) => {
+  locations.forEach((location) => {
     const marker = L.marker(
       {
-        lat: element.location.lat,
-        lng: element.location.lng,
+        lat: location.lat,
+        lng: location.lng,
       },
       {
         icon: pinIcon,
       },
     );
-    marker
-      .addTo(markerGroup)
-      .bindPopup(getCard(element));
+    marker.addTo(markerGroup).bindPopup(adMocks(location));
   });
 };
 
-// console.log(addMarkers());
+const setAdPin = (locations) => {
+  markerGroup.clearLayrs();
+  createAdPinMarker(locations.slice(0, OFFERS_COUNT));
+};
 
-export {addMarkers};
+// Инициализация карты
+const setOnMapLoad = () => {
+  map.on('load', () => {
+    switchAdFormState(false);
+  });
+};
+
+export {initMap, createAdPinMarker, setAdPin, setOnMapLoad};
