@@ -2,13 +2,24 @@ import { getCoordinates } from './ad-form.js';
 import { adMocks } from './mock.js';
 import { switchAdFormState } from './page-states.js';
 
+// const map = L.map('map-canvas')
+//   .on('load', () => {
+//     console.log('Карта инициализирована');
+//   })
+//   .setView({
+//     lat: 59.92749,
+//     lng: 30.31127,
+//   }, 10);
+
+// L.tileLayer(
+//   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+//   {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+//   },
+// ).addTo(map);
+
 const map = L.map('map-canvas');
-const markerGroup = L.layerGroup().addTo(map); // Маркер похожих объявлений
 const OFFERS_COUNT = 10;
-const CENTER_MAP = {
-  lat: 35.682339,
-  lng: 139.75318,
-};
 
 // Главная иконка маркера на карте
 const mainPinIcon = L.icon({
@@ -19,7 +30,10 @@ const mainPinIcon = L.icon({
 
 // Главный маркер на карте
 const mainPinMarker = L.marker(
-  { CENTER_MAP},
+  {
+    lat: 35.682339,
+    lng: 139.75318,
+  },
   {
     draggable: true, // Метку можно передвигать по карте
     icon: mainPinIcon,
@@ -54,6 +68,8 @@ mainPinMarker.on('moveend', (evt) => {
 // for(const ad of adMocks) {
 //   console.log(ad.location);
 // }
+
+const markerGroup = L.layerGroup().addTo(map); // Маркер похожих объявлений
 
 // Функция для создания второстепенных маркеров
 const createAdPinMarker = (locations) => {
