@@ -1,6 +1,3 @@
-import {adMocks} from './mock.js';
-// import { getRandomArrayItem } from './random.js';
-
 const houseTypeToString = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
@@ -10,8 +7,6 @@ const houseTypeToString = {
 };
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const cardFragment = document.createDocumentFragment();
-
 
 /**
  * @param {Element} card Элемент клонирования карточки
@@ -59,7 +54,7 @@ const markUpPhotos = (cardElement, photos) => {
   }
 };
 
-for( const {offer, author} of adMocks) {
+export const markUpAd = ({offer, author}) => {
 
   const cardElement = cardTemplate.cloneNode(true);
 
@@ -74,7 +69,5 @@ for( const {offer, author} of adMocks) {
   markUpPhotos(cardElement, offer.photos);
   cardElement.querySelector('.popup__avatar').src = author.avatar;
 
-  cardFragment.append(cardElement);
-}
-
-// canvasElement.append(getRandomArrayItem(cardFragment.childNodes));
+  return cardElement;
+};

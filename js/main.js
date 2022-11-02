@@ -1,10 +1,14 @@
-import './markup-elements.js';
 import './ad-form.js';
-import {initMap, createAdPinMarker, setAdPin, setOnMapLoad} from './map.js';
+import {switchAdFormState} from './page-states.js';
+import {adMocks} from './mock.js';
+import {initMap, setAdPins, setOnMapLoad} from './map.js';
 
-setOnMapLoad(() => {
-  createAdPinMarker();
-  setAdPin(location);
+switchAdFormState();
+
+initMap({
+  lat: 35.682339,
+  lng: 139.75318,
 });
+setOnMapLoad(() => switchAdFormState(false));
 
-initMap();
+setAdPins(adMocks);

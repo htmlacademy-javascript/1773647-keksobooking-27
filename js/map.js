@@ -1,22 +1,5 @@
 import { getCoordinates } from './ad-form.js';
-import { adMocks } from './mock.js';
-import { switchAdFormState } from './page-states.js';
-
-// const map = L.map('map-canvas')
-//   .on('load', () => {
-//     console.log('Карта инициализирована');
-//   })
-//   .setView({
-//     lat: 59.92749,
-//     lng: 30.31127,
-//   }, 10);
-
-// L.tileLayer(
-//   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-//   {
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-//   },
-// ).addTo(map);
+import { markUpAd } from './markup-elements.js';
 
 const map = L.map('map-canvas');
 const OFFERS_COUNT = 10;
@@ -42,7 +25,7 @@ const mainPinMarker = L.marker(
 
 // Виторостепенный маркер на карте
 const pinIcon = L.icon({
-  iconUrl: './img/pin.svg.',
+  iconUrl: './img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
@@ -59,44 +42,43 @@ const initMap = (coordinate) => {
   mainPinMarker.addTo(map);
 };
 
-// Запись координат главного маркера для поля формы - Адрес
+/**
+ * Запись координат главного маркера для поля формы - Адрес
+ */
 mainPinMarker.on('moveend', (evt) => {
   const coordinatesMarker = evt.target.getLatLng();
   getCoordinates(coordinatesMarker);
 });
 
-// for(const ad of adMocks) {
-//   console.log(ad.location);
-// }
+/**
+ * Маркер похожих объявлений
+ */
+const markerGroup = L.layerGroup().addTo(map);
 
-const markerGroup = L.layerGroup().addTo(map); // Маркер похожих объявлений
-
-// Функция для создания второстепенных маркеров
+/**
+ * Функция для создания второстепенных маркеров
+ */
 const createAdPinMarker = (locations) => {
   locations.forEach((location) => {
     const marker = L.marker(
-      {
-        lat: location.lat,
-        lng: location.lng,
-      },
+      location.location,
       {
         icon: pinIcon,
       },
     );
-    marker.addTo(markerGroup).bindPopup(adMocks(location));
+    marker.addTo(markerGroup).bindPopup(markUpAd(location));
   });
 };
 
-const setAdPin = (locations) => {
-  markerGroup.clearLayrs();
+const setAdPins = (locations) => {
+  markerGroup.clearLayers();
   createAdPinMarker(locations.slice(0, OFFERS_COUNT));
 };
 
 // Инициализация карты
-const setOnMapLoad = () => {
-  map.on('load', () => {
-    switchAdFormState(false);
-  });
-};
+/**
+ * @param {Function} cb
+ */
+const setOnMapLoad = (cb) => map.on('load', cb);
 
-export {initMap, createAdPinMarker, setAdPin, setOnMapLoad};
+export {initMap, createAdPinMarker, setAdPins, setOnMapLoad};
