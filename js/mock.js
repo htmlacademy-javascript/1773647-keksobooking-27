@@ -16,9 +16,7 @@ const TITLES = [
   'Дом под ключ с бассейн и хамамом'
 ];
 
-/**
- * @type {HousingType[]}
-*/
+/** @type {HousingType[]} */
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
 /**
@@ -57,9 +55,7 @@ const DESCRIPTIONS = [
   'Светлая, уютная квартира, окна на 3 стороны!'
 ];
 
-/**
- * @returns одно из заготовленных значений
- */
+/** @returns одно из заготовленных значений */
 const mockPhoto = () => {
   const URLS = ['duonguyen-8LrGtIxxa4w', 'brandon-hoogenboom-SNxQGWxZQi0', 'claire-rendall-b6kAwr1i0Iw'];
 
@@ -68,8 +64,8 @@ const mockPhoto = () => {
 
 export const mockAd = (_, index) => {
 
-  const randomLat = getRandomFloat(35.65000, 35.70000);
-  const randomLng = getRandomFloat(139.70000, 139.80000);
+  const randomLat = getRandomFloat(35.65, 35.7, 5);
+  const randomLng = getRandomFloat(139.7, 139.8, 5);
 
   return {
     author: {

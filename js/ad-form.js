@@ -34,7 +34,7 @@ titleDataset.pristineMinlengthMessage = validationMessage.LENGTH;
 titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
 
 addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
-export const getCoordinates = (location) => {
+export const setCoordinates = (location) => {
   addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
 };
 
@@ -74,7 +74,7 @@ pristine.addValidator(capacitySelect, (value) => {
 const checkMinPrice = (value) => value < typeToMinPrice[typeSelect.value];
 const showMinPriceMessage = () => `Минимальная цена ${typeToMinPrice[typeSelect.value]}`;
 
-pristine.addValidator (priceInput, checkMinPrice, showMinPriceMessage);
+pristine.addValidator(priceInput, checkMinPrice, showMinPriceMessage);
 
 typeSelect.addEventListener('input', () => pristine.validate(priceInput));
 
@@ -83,7 +83,7 @@ adForm.addEventListener('submit', (evt) => {
   pristine.validate();
 });
 
-// Слайдер в поле цены
+/** Слайдер в поле цены */
 const sliderElement = document.querySelector('.ad-form__slider');
 
 noUiSlider.create(sliderElement, {
@@ -95,18 +95,25 @@ noUiSlider.create(sliderElement, {
   step: 10,
   connect: 'lower',
   format: {
-    to: function (value) {
+    to(value) {
       return value.toFixed(0);
     },
-    from: function (value) {
+    from(value) {
       return parseFloat(value);
     },
   },
 });
 
 sliderElement.noUiSlider.on('update', () => {
-  priceInput.value = sliderElement.noUiSlider.get();
+  const sliderValue = sliderElement.noUiSlider.get();
+  const diff = Math.abs(priceInput.value - sliderValue);
+
+  if(diff >= 10){
+    priceInput.value = sliderValue;
+  }
 });
+
+priceInput.addEventListener('input', ({target: {value}}) => sliderElement.noUiSlider.set(value));
 
 sliderElement.setAttribute('disabled', true);
 
