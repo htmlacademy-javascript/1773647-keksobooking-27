@@ -27,6 +27,7 @@ const {
   timeout: timeoutSelect,
   rooms: roomsSelect,
   capacity: capacitySelect,
+  address: addressSelect,
 } = adForm.elements;
 
 const priceDataset = priceInput.dataset;
@@ -34,6 +35,11 @@ const priceDataset = priceInput.dataset;
 titleDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 titleDataset.pristineMinlengthMessage = validationMessage.LENGTH;
 titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
+
+addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
+export const setCoordinates = (location) => {
+  addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
+};
 
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
@@ -55,3 +61,39 @@ adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
+
+/** Слайдер в поле цены */
+const sliderElement = document.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 10,
+  connect: 'lower',
+  format: {
+    to(value) {
+      return value.toFixed(0);
+    },
+    from(value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  const sliderValue = sliderElement.noUiSlider.get();
+  const diff = Math.abs(priceInput.value - sliderValue);
+
+  if(diff >= 10){
+    priceInput.value = sliderValue;
+  }
+});
+
+priceInput.addEventListener('input', ({target: {value}}) => sliderElement.noUiSlider.set(value));
+
+sliderElement.setAttribute('disabled', true);
+
+sliderElement.removeAttribute('disabled');

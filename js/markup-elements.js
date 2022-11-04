@@ -1,9 +1,3 @@
-import {photoMocks} from './mock.js';
-import { getRandomArrayItem } from './random.js';
-
-const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const cardFragment = document.createDocumentFragment();
-
 const houseTypeToString = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
@@ -11,6 +5,8 @@ const houseTypeToString = {
   'palace': 'Дворец',
   'hotel': 'Отель',
 };
+
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 /**
  * @param {Element} card Элемент клонирования карточки
@@ -41,7 +37,6 @@ const markUpFeatures = (card, features) => {
 const markUpPhotos = (cardElement, photos) => {
 
   /** @type {Element} */
-
   const photoWrapper = cardElement.querySelector('.popup__photos');
   const photoTemplate = cardElement.querySelector('.popup__photo');
   photoWrapper.removeChild(photoTemplate);
@@ -53,14 +48,13 @@ const markUpPhotos = (cardElement, photos) => {
   for( const photo of photos){
 
     /** @type {HTMLImageElement} */
-
     const photoElement = photoTemplate.cloneNode();
     photoElement.src = photo;
     photoWrapper.append(photoElement);
   }
 };
 
-for( const {offer, author} of photoMocks) {
+export const markUpAd = ({offer, author}) => {
 
   const cardElement = cardTemplate.cloneNode(true);
 
@@ -75,9 +69,5 @@ for( const {offer, author} of photoMocks) {
   markUpPhotos(cardElement, offer.photos);
   cardElement.querySelector('.popup__avatar').src = author.avatar;
 
-  cardFragment.append(cardElement);
-}
-
-const canvasElement = document.querySelector('#map-canvas');
-
-canvasElement.append(getRandomArrayItem(cardFragment.childNodes));
+  return cardElement;
+};
