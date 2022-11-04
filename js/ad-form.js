@@ -1,3 +1,6 @@
+import { initPriceAndType } from './form/price.js';
+import { initCapacityAndRooms } from './form/capacity.js';
+
 const PRISTINE_OPTIONS = {
   classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
   errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
@@ -41,21 +44,6 @@ export const setCoordinates = (location) => {
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
 
-const typeToMinPrice = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
-};
-
-const roomsToCapacity = {
-  '1': new Set(['1']),
-  '2': new Set(['2', '1']),
-  '3': new Set(['3', '2', '1']),
-  '100': new Set(['0']),
-};
-
 timeInSelect.addEventListener('change', () => {
   timeoutSelect.value = timeInSelect.value;
 });
@@ -66,17 +54,8 @@ timeoutSelect.addEventListener('change', () => {
 
 const pristine = new Pristine(adForm, PRISTINE_OPTIONS);
 
-pristine.addValidator(capacitySelect, (value) => {
-  const roomAmount = roomsSelect.value;
-  return roomsToCapacity[+roomAmount].has(value);
-}, () => `Для ${roomsSelect.value} комнат не допустимо гостей ${capacitySelect.value}`);
-
-const checkMinPrice = (value) => value < typeToMinPrice[typeSelect.value];
-const showMinPriceMessage = () => `Минимальная цена ${typeToMinPrice[typeSelect.value]}`;
-
-pristine.addValidator(priceInput, checkMinPrice, showMinPriceMessage);
-
-typeSelect.addEventListener('input', () => pristine.validate(priceInput));
+initPriceAndType(typeSelect, priceInput, pristine);
+initCapacityAndRooms(capacitySelect, roomsSelect, pristine);
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
