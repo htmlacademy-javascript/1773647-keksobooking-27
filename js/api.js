@@ -6,7 +6,7 @@ const getData = () => {
   fetch(GET_URL)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       setAdPins(data);
     });
 };

@@ -1,7 +1,7 @@
 import {setCoordinates} from './ad-form.js';
 import {switchAdFormState} from './page-states.js';
 // import {adMocks} from './mock.js';
-import {initMap, setAdPins, setOnMapLoad} from './map.js';
+import {initMap, setOnMapLoad} from './map.js';
 import './api.js';
 
 const INIT_COORDS = {
