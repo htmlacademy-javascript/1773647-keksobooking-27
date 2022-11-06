@@ -25,8 +25,7 @@ const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
  */
 const mockFeatures = () => {
 
-  /** @constant
-    @type {Feature} */
+  /** @constant @type {Feature} */
   const remainFeatures = [
     'wifi',
     'dishwasher',
