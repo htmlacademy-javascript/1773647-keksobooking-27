@@ -15,5 +15,3 @@ setOnMapLoad(() => switchAdFormState(false));
 setCoordinates(INIT_COORDS);
 initMap(INIT_COORDS);
 
-// setAdPins(adMocks);
-// setAdPins();

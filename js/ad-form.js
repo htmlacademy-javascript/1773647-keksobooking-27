@@ -1,5 +1,6 @@
 import { initPriceAndType } from './form/price.js';
 import { initCapacityAndRooms } from './form/capacity.js';
+import {showAlert} from './error.js';
 
 const PRISTINE_OPTIONS = {
   classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
@@ -32,15 +33,18 @@ const {
 
 const priceDataset = priceInput.dataset;
 
+/** Валадация для заголовка */
 titleDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 titleDataset.pristineMinlengthMessage = validationMessage.LENGTH;
 titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
 
+/** Валадация для адреса */
 addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
 export const setCoordinates = (location) => {
   addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
 };
 
+/** Валадация для прайса */
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
 
@@ -97,3 +101,52 @@ priceInput.addEventListener('input', ({target: {value}}) => sliderElement.noUiSl
 sliderElement.setAttribute('disabled', true);
 
 sliderElement.removeAttribute('disabled');
+
+/** Отправка формы
+ * onSuccess - параметр, для функции, которая при успешной отправки - формf, не перезагружаясь, переходит в состояние, когда:
+ * все заполненные поля возвращаются в изначальное состояние;
+ * фильтрация (состояние фильтров и отфильтрованные метки) сбрасывается;
+ * метка адреса возвращается в исходное положение;
+ * значение поля адреса корректируется соответственно исходному положению метки;
+ * если на карте был показан балун, то он должен быть скрыт.
+*/
+const setUserFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+
+      fetch(
+        'https://27.javascript.pages.academy/keksobooking',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+        .then((response) => {
+          if (response.ok) {
+            onSuccess();
+          } else {
+            showAlert();
+          }
+        })
+        .catch(() => {
+          showAlert();
+        });
+    }
+  });
+};
+
+export {setUserFormSubmit};
+
+/**
+ * Добавьте обработчик отправки формы, если ещё этого не сделали, который бы отменял действие формы по умолчанию и отправлял данные формы посредством fetch на сервер. (сделано)
+
+Реализуйте возвращение формы в исходное состояние при успешной отправке, а также показ сообщения пользователю.
+
+Если при отправке данных произошла ошибка запроса, покажите соответствующее сообщение. (cделано, кроме esc)
+
+Похожим образом обработайте нажатие на кнопку сброса.
+ */
