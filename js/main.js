@@ -22,7 +22,6 @@ const resetCoordinate = () => {
 const onSenDataSuccess = () => {
   resetForm();
   resetCoordinate();
-  showError();
   showSuccess();
 };
 
