@@ -1,8 +1,10 @@
-import {setCoordinates} from './ad-form.js';
-import {switchAdFormState} from './page-states.js';
-// import {adMocks} from './mock.js';
-import {initMap, setOnMapLoad} from './map.js';
-import './api.js';
+import { resetForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
+import { switchAdFormState } from './page-states.js';
+import { initMap, setOnMapLoad, setAdPins } from './map.js';
+import { getData, sendData } from './api.js';
+import { showAlert } from './utils';
+import { showError } from './error.js';
+import { showSuccess } from './success.js';
 
 const INIT_COORDS = {
   lat: 35.682339,
@@ -12,6 +14,22 @@ const INIT_COORDS = {
 switchAdFormState();
 setOnMapLoad(() => switchAdFormState(false));
 
-setCoordinates(INIT_COORDS);
-initMap(INIT_COORDS);
+const resetCoordinate = () => {
+  setCoordinates(INIT_COORDS);
+  initMap(INIT_COORDS);
+};
+
+const onSenDataSuccess = () => {
+  resetForm();
+  resetCoordinate();
+  showError();
+  showSuccess();
+};
+
+setUserFormSubmit(async (data) => {
+  await sendData(showSuccess, showError, data);
+});
+
+onSenDataSuccess();
+getData(setAdPins, showAlert);
 

@@ -1,18 +1,39 @@
-import { setAdPins } from './map.js';
-
 const GET_URL = 'https://27.javascript.pages.academy/keksobooking/data';
 
-const getData = () => {
-  fetch(GET_URL)
-    .then((response) => response.json())
-    .then((data) => {
-      // console.log(data);
-      // throw new Error('error');
-      setAdPins(data);
-    });
+const getData = async (onSuccess, onFail) => {
+  try {
+    const responce = await fetch(GET_URL);
 
+    if(!responce.ok) {
+      throw new Error ('Не удалось агрузить объявления');
+    }
+
+    const offers = await responce.json();
+    onSuccess(offers);
+  } catch (error) {
+    onFail(error.message);
+  }
 };
 
-getData();
+const sendData = async (onSuccess, onFail, body) => {
+  const FORM_URL = 'https://27.javascript.pages.academy/keksobooking';
 
-//Получение данных - Если при загрузке данных с сервера произошла ошибка запроса, нужно показать соответствующее сообщение. Дизайн блока с сообщением нужно придумать самостоятельно.
+  try {
+    const responce = await fetch(FORM_URL,
+      {
+        method: 'POST',
+        body,
+      });
+
+    if(!responce.ok) {
+      throw new Error ('Не удалось отправить форму. опробуйте еще раз.');
+    }
+
+    onSuccess();
+  } catch (error) {
+    onFail(error.message);
+  }
+};
+
+export { getData, sendData };
+
