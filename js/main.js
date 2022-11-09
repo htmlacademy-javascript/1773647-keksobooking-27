@@ -2,7 +2,7 @@ import { resetForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
 import { switchAdFormState } from './page-states.js';
 import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
-import { showAlert } from './utils';
+import { showAlert } from './utils.js';
 import { showError } from './error.js';
 import { showSuccess } from './success.js';
 
