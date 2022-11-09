@@ -110,11 +110,11 @@ const resetForm = () => {
 const adFormButton = adForm.querySelector('.ad-form___submit');
 
 const blockSubmitButton = () => {
-  adFormButton.isDisable = true;
+  adFormButton.disabled = true;
 };
 
 const onblockSubmitButton = () => {
-  adFormButton.isDisable = false;
+  adFormButton.disabled = false;
 };
 
 /** Отправка формы */

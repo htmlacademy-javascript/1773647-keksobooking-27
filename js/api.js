@@ -5,7 +5,7 @@ const getData = async (onSuccess, onFail) => {
     const responce = await fetch(GET_URL);
 
     if(!responce.ok) {
-      throw new Error ('Не удалось агрузить объявления');
+      throw new Error ('Не удалось загрузить объявления');
     }
 
     const offers = await responce.json();
@@ -26,7 +26,7 @@ const sendData = async (onSuccess, onFail, body) => {
       });
 
     if(!responce.ok) {
-      throw new Error ('Не удалось отправить форму. опробуйте еще раз.');
+      throw new Error ('Не удалось отправить форму. Попробуйте еще раз.');
     }
 
     onSuccess();
