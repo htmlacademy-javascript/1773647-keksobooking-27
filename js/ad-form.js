@@ -104,7 +104,7 @@ sliderElement.removeAttribute('disabled');
 /** Сбрасываем форму */
 const resetForm = () => {
   adForm.reset();
-  noUiSlider.set(priceInput.value);
+  sliderElement.noUiSlider.set(priceInput.value);
 };
 
 const adFormButton = adForm.querySelector('.ad-form___submit');
