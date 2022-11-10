@@ -3,8 +3,7 @@ import { switchAdFormState } from './page-states.js';
 import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
-import { showError } from './error.js';
-import { showSuccess } from './success.js';
+import { showSuccess, showError } from './modal.js';
 
 const INIT_COORDS = {
   lat: 35.682339,
@@ -19,16 +18,22 @@ const resetCoordinate = () => {
   initMap(INIT_COORDS);
 };
 
-const onSenDataSuccess = () => {
+resetCoordinate();
+
+const resetFormAndMap = () => {
   resetForm();
   resetCoordinate();
+};
+
+const onSuccess = () => {
   showSuccess();
+  resetFormAndMap();
 };
 
 setUserFormSubmit(async (data) => {
-  await sendData(showSuccess, showError, data);
+  await sendData(onSuccess, showError, data);
 });
 
-onSenDataSuccess();
+resetFormAndMap();
 getData(setAdPins, showAlert);
 

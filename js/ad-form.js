@@ -107,13 +107,13 @@ const resetForm = () => {
   sliderElement.noUiSlider.set(priceInput.value);
 };
 
-const adFormButton = adForm.querySelector('.ad-form___submit');
+const adFormButton = adForm.querySelector('.ad-form__submit');
 
 const blockSubmitButton = () => {
   adFormButton.disabled = true;
 };
 
-const onblockSubmitButton = () => {
+const unblockSubmitButton = () => {
   adFormButton.disabled = false;
 };
 
@@ -126,7 +126,7 @@ const setUserFormSubmit = (cb) => {
     if (isValid) {
       blockSubmitButton();
       await cb(new FormData(evt.target));
-      onblockSubmitButton();
+      unblockSubmitButton();
     }
   });
 };
