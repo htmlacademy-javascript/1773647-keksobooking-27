@@ -41,7 +41,6 @@ titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
 addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
 const setCoordinates = (location) => {
   addressSelect.setAttribute('value', `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`);
-  // addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
 };
 
 /** Валадация для прайса */

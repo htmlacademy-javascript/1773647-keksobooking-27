@@ -21,7 +21,7 @@ const resetCoordinate = () => {
 resetCoordinate();
 getData(setAdPins, showAlert);
 
-adForm.addEventListener('reset', resetCoordinate());
+adForm.addEventListener('reset', resetCoordinate);
 
 const onSuccess = () => {
   showSuccess();
