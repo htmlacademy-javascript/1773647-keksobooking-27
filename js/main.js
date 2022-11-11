@@ -1,4 +1,4 @@
-import { resetForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
+import { adForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
 import { switchAdFormState } from './page-states.js';
 import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
@@ -19,21 +19,16 @@ const resetCoordinate = () => {
 };
 
 resetCoordinate();
+getData(setAdPins, showAlert);
 
-const resetFormAndMap = () => {
-  resetForm();
-  resetCoordinate();
-};
+adForm.addEventListener('reset', resetCoordinate());
 
 const onSuccess = () => {
   showSuccess();
-  resetFormAndMap();
+  adForm.reset();
 };
 
 setUserFormSubmit(async (data) => {
   await sendData(onSuccess, showError, data);
 });
-
-resetFormAndMap();
-getData(setAdPins, showAlert);
 

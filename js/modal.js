@@ -6,7 +6,6 @@ const errorTemplate = document.querySelector('#error').content.querySelector('.e
 const HIDE_DELAY = 5000;
 
 /**
- *
  * @param {HTMLElement} element
  * @param {string} [extraCloser] CSS Selector
  */

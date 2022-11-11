@@ -39,8 +39,9 @@ titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
 
 /** Валадация для адреса */
 addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
-export const setCoordinates = (location) => {
-  addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
+const setCoordinates = (location) => {
+  addressSelect.setAttribute('value', `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`);
+  // addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
 };
 
 /** Валадация для прайса */
@@ -101,11 +102,9 @@ sliderElement.setAttribute('disabled', true);
 
 sliderElement.removeAttribute('disabled');
 
-/** Сбрасываем форму */
-const resetForm = () => {
-  adForm.reset();
-  sliderElement.noUiSlider.set(priceInput.value);
-};
+adForm.addEventListener('reset', () => {
+  sliderElement.noUiSlider.set(0);
+});
 
 const adFormButton = adForm.querySelector('.ad-form__submit');
 
@@ -131,5 +130,5 @@ const setUserFormSubmit = (cb) => {
   });
 };
 
-export {setUserFormSubmit, resetForm};
+export {setUserFormSubmit, setCoordinates, adForm};
 
