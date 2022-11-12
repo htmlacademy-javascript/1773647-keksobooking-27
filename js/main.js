@@ -4,6 +4,8 @@ import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
 import { showSuccess, showError } from './modal.js';
+import './filter.js';
+import './image.js';
 
 const INIT_COORDS = {
   lat: 35.682339,

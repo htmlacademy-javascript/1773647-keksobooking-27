@@ -109,10 +109,12 @@ const adFormButton = adForm.querySelector('.ad-form__submit');
 
 const blockSubmitButton = () => {
   adFormButton.disabled = true;
+  adFormButton.textContent = 'Отправляю...';
 };
 
 const unblockSubmitButton = () => {
   adFormButton.disabled = false;
+  adFormButton.textContent = 'Опубликовать';
 };
 
 /** Отправка формы */
