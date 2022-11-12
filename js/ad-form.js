@@ -32,15 +32,18 @@ const {
 
 const priceDataset = priceInput.dataset;
 
+/** Валадация для заголовка */
 titleDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 titleDataset.pristineMinlengthMessage = validationMessage.LENGTH;
 titleDataset.pristineMaxlengthMessage = validationMessage.LENGTH;
 
+/** Валадация для адреса */
 addressSelect.pristineRequiredMessage = validationMessage.REQUIRED;
-export const setCoordinates = (location) => {
-  addressSelect.value = `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`;
+const setCoordinates = (location) => {
+  addressSelect.setAttribute('value', `${(location.lat).toFixed(5)}, ${(location.lng).toFixed(5)}`);
 };
 
+/** Валадация для прайса */
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
 
@@ -97,3 +100,34 @@ priceInput.addEventListener('input', ({target: {value}}) => sliderElement.noUiSl
 sliderElement.setAttribute('disabled', true);
 
 sliderElement.removeAttribute('disabled');
+
+adForm.addEventListener('reset', () => {
+  sliderElement.noUiSlider.set(0);
+});
+
+const adFormButton = adForm.querySelector('.ad-form__submit');
+
+const blockSubmitButton = () => {
+  adFormButton.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  adFormButton.disabled = false;
+};
+
+/** Отправка формы */
+const setUserFormSubmit = (cb) => {
+  adForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      await cb(new FormData(evt.target));
+      unblockSubmitButton();
+    }
+  });
+};
+
+export {setUserFormSubmit, setCoordinates, adForm};
+

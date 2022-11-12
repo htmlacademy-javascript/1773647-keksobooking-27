@@ -10,13 +10,12 @@ const cardTemplate = document.querySelector('#card').content.querySelector('.pop
 
 /**
  * @param {Element} card Элемент клонирования карточки
- * @param {import ('./mock.js').Feature[]} features Массив преимуществ
+ * @param {import ('./mock.js').Feature[] | undefined} features Массив преимуществ
 */
-
 const markUpFeatures = (card, features) => {
   const featuresList = card.querySelector('.popup__features');
 
-  if(features.length === 0) {
+  if(features === undefined || features?.length === 0) {
     return featuresList.remove();
   }
 
