@@ -1,11 +1,3 @@
-/**
- * @param {number} number
- * @example
- * formatNumber(5) // '05'
- * formatNumber(12) // '12'
- */
-export const formatNumber = (number) => number < 10 ? `0${number}` : String(number);
-
 const ALERT_SHOW_TIME = 5000;
 
 const showAlert = (message) => {
@@ -29,4 +21,18 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export { showAlert };
+/** @param {KeyboardEvent} evt */
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+/** Функция для устранения дребезга */
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export { showAlert, isEscEvent, debounce };

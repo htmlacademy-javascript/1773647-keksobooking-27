@@ -53,28 +53,16 @@ const markerGroup = L.layerGroup().addTo(map);
 
 /** Функция для создания второстепенных маркеров */
 const createAdPinMarker = (locations) => {
-  locations.forEach((location, offer, author) => {
+  locations.forEach(({location, offer, author}) => {
     const marker = L.marker(
-      location.location,
+      location,
       {
         icon: pinIcon,
       },
     );
-    marker.addTo(markerGroup).bindPopup(markUpAd(location, offer, author));
+    marker.addTo(markerGroup).bindPopup(markUpAd({offer, author}));
   });
 };
-
-// const createAdPinMarker = (locations) => {
-//   locations.forEach((location, offer, author) => {
-//     const marker = L.marker(
-//       location,
-//       {
-//         icon: pinIcon,
-//       },
-//     );
-//     marker.addTo(markerGroup).bindPopup(markUpAd({offer, author}));
-//   });
-// };
 
 const setAdPins = (locations) => {
   markerGroup.clearLayers();
