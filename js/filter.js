@@ -1,3 +1,6 @@
+import { createAdPinMarker } from './map.js';
+import { showAlert } from './utils.js';
+
 const OFFERS_COUNT = 10;
 const priceHousing = {
   MIN: 10000,
@@ -5,64 +8,62 @@ const priceHousing = {
 };
 
 const filterElement = document.querySelector('.map__filters');
-const typeField = filterElement.querySelector('#housing-type');
-const priceField = filterElement.querySelector('#housing-price');
-const roomsField = filterElement.querySelector('#housing-rooms');
-const guestsField = filterElement.querySelector('#housing-guests');
-const featuresCheckbox = filterElement.querySelectorAll('.map__checkbox');
 
-const filterOff = () => {
-  filterElement.disabled = true;
+let offers = [];
+
+const compareType = (type) => {
+  const typeField = filterElement.querySelector('#housing-type');
+  return type === typeField.value || typeField.value === 'any';
 };
 
-const filterOn = () => {
-  filterElement.disabled = false;
-};
-
-const offers = [];
-
-const filterByType = (offer, type) => type === 'any' || offer.offer.type === type;
-
+/** Фильтрация по прайсу */
 const filterByPrice = (offer, price) => {
   switch (price) {
     case 'any':
       return true;
     case 'low':
-      return offer.offer.price < priceHousing.MIN;
+      return offer.price < priceHousing.MIN;
     case 'middle':
-      return offer.offer.price < priceHousing.MAX && offer.offer.price > priceHousing.MIN;
+      return offer.price < priceHousing.MAX && offer.price > priceHousing.MIN;
     case 'high':
-      return offer.offer.price >= priceHousing.MAX;
+      return offer.price >= priceHousing.MAX;
   }
 };
 
-const filterByRooms = (offer, rooms) => rooms === 'any' || offer.offer.rooms === +rooms;
-
-const filterByGuests = (offer, guests) => guests === 'any' || offer.offer.guests === +guests;
-
-const filterByFeatures = (offer, features) => {
-  if(!features.lenght) {
-    return true;
-  }
-  if(!offer.offer.features) {
-    return false;
-  }
-
-  return features.every((feature) => offer.offer.feature.includes(feature));
+const comparePrice = (price) => {
+  const priceField = filterElement.querySelector('#housing-price');
+  const priceRange = filterByPrice(price);
+  return priceRange === priceField.value || priceField.value === 'any';
 };
 
-const getFilterOffers = () => {
-  const selectType = typeField.value;
-  const selectPrice = priceField.value;
-  const selectRooms = roomsField.value;
-  const selectGuests = guestsField.value;
-  const selectFeatures = [];
+const compareRooms = (rooms) => {
+  const roomsField = filterElement.querySelector('#housing-rooms');
+  return rooms.toString() === roomsField.value || roomsField.value === 'any';
+};
 
-  featuresCheckbox.forEach((checkbox) => {
-    if(checkbox.checked) {
-      selectFeatures.push(checkbox.value);
+const compareGuests = (guests) => {
+  const guestsField = filterElement.querySelector('#housing-guests');
+  return guests.toString() === guestsField.value || guestsField.value === 'any';
+};
+
+const getcheckedCheckboxes = (featuresArray) => {
+  const checkedCheckboxes = [];
+  featuresArray.forEach((item) => {
+    if (item.checked) {
+      checkedCheckboxes.push(item.value);
     }
   });
+  return checkedCheckboxes;
+};
+
+const compareFeatures = (features) => {
+  const featuresCheckbox = filterElement.querySelectorAll('.map__checkbox');
+  const checkedFeatures = getcheckedCheckboxes(featuresCheckbox);
+  return checkedFeatures.length === 0 || features && checkedFeatures.every((element) => features.includes(element));
+};
+
+/** Функция для сравнения всех полей */
+const compareAllFields = () => {
 
   const filteredOffers = [];
   for(const offer of offers) {
@@ -70,21 +71,37 @@ const getFilterOffers = () => {
       break;
     }
     if(
-      filterByType(offer, selectType) &&
-      filterByPrice(offer, selectPrice) &&
-      filterByRooms(offer, selectRooms) &&
-      filterByGuests(offer, selectGuests) &&
-      filterByFeatures(offer, selectFeatures)
+      compareType(offer.type)
+      && comparePrice(offer.price)
+      && compareRooms(offer.rooms)
+      && compareGuests(offer.guests)
+      && compareFeatures(offer.features)
     ) {
       filteredOffers.push(offer);
+    }
+
+    filteredOffers.forEach((ad) => createAdPinMarker(ad));
+    if (filteredOffers.length === 0) {
+      showAlert('Не нашлось подходящих объявлений, попробуйте изменить настройки фильтров');
     }
   }
 
   return filteredOffers;
 };
 
-const setOnFilterChange = (cb) => {
-  filterElement.addEventListener('change', () => cb(getFilterOffers));
+const resetFilters = () => filterElement.reset();
+
+const onAnyFieldChange = (cb) => {
+  const mapFeatures = document.querySelectorAll('[name="features"]');
+  filterElement.forEach((item) => item.addEventListener('change', cb));
+  mapFeatures.forEach((item) => item.addEventListener('change', cb));
 };
 
-export { filterOff, filterOn, setOnFilterChange };
+/** Функция для отображания похожих объявлений */
+const renderSimilarAds = (otherAds) => {
+  otherAds
+    .slice(0, OFFERS_COUNT)
+    .forEach((ad) => createAdPinMarker(ad));
+};
+
+export { compareAllFields, resetFilters, onAnyFieldChange, renderSimilarAds };

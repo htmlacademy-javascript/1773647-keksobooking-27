@@ -131,5 +131,10 @@ const setUserFormSubmit = (cb) => {
   });
 };
 
-export {setUserFormSubmit, setCoordinates, adForm};
+const onResetButtonClick = (cb) => {
+  const resetButton = adForm.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', cb);
+};
+
+export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick};
 
