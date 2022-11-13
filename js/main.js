@@ -32,4 +32,3 @@ const onSuccess = () => {
 setUserFormSubmit(async (data) => {
   await sendData(onSuccess, showError, data);
 });
-

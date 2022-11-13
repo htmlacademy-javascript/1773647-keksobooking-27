@@ -47,6 +47,7 @@ const resetPhotoContainer = (photoContainer) => {
   photoContainer.innerHTML = '';
 };
 
+/** Отрисовка загруженных фото */
 createPhotoPreview(fileAvatar, previewAvatar);
 createPhotoPreview(fileChooserZone, previewZone);
 
