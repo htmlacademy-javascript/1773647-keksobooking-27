@@ -2,14 +2,13 @@ import { createAdPinMarker } from './map.js';
 import { showAlert } from './utils.js';
 
 const OFFERS_COUNT = 10;
+const FILTER_DEFAULT = 'any';
 const priceHousing = {
   MIN: 10000,
   MAX: 50000,
 };
 
 const filterElement = document.querySelector('.map__filters');
-
-let offers = [];
 
 const compareType = (type) => {
   const typeField = filterElement.querySelector('#housing-type');
@@ -30,20 +29,21 @@ const filterByPrice = (offer, price) => {
   }
 };
 
+/** Устанавливает взаимосвязь между фильтром и объялениями */
 const comparePrice = (price) => {
   const priceField = filterElement.querySelector('#housing-price');
   const priceRange = filterByPrice(price);
-  return priceRange === priceField.value || priceField.value === 'any';
+  return priceRange === priceField.value || priceField.value === FILTER_DEFAULT;
 };
 
 const compareRooms = (rooms) => {
   const roomsField = filterElement.querySelector('#housing-rooms');
-  return rooms.toString() === roomsField.value || roomsField.value === 'any';
+  return rooms.toString() === roomsField.value || roomsField.value === FILTER_DEFAULT;
 };
 
 const compareGuests = (guests) => {
   const guestsField = filterElement.querySelector('#housing-guests');
-  return guests.toString() === guestsField.value || guestsField.value === 'any';
+  return guests.toString() === guestsField.value || guestsField.value === FILTER_DEFAULT;
 };
 
 const getcheckedCheckboxes = (featuresArray) => {
@@ -63,6 +63,7 @@ const compareFeatures = (features) => {
 };
 
 /** Функция для сравнения всех полей */
+let offers = [];
 const compareAllFields = () => {
 
   const filteredOffers = [];

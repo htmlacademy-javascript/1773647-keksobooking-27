@@ -19,6 +19,9 @@ const validationMessage = {
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
 
+const sliderElement = document.querySelector('.ad-form__slider');
+const adFormButton = adForm.querySelector('.ad-form__submit');
+
 const {
   title: {dataset: titleDataset},
   price: priceInput,
@@ -66,8 +69,6 @@ adForm.addEventListener('submit', (evt) => {
 });
 
 /** Слайдер в поле цены */
-const sliderElement = document.querySelector('.ad-form__slider');
-
 noUiSlider.create(sliderElement, {
   range: {
     min: 0,
@@ -104,8 +105,6 @@ sliderElement.removeAttribute('disabled');
 adForm.addEventListener('reset', () => {
   sliderElement.noUiSlider.set(0);
 });
-
-const adFormButton = adForm.querySelector('.ad-form__submit');
 
 const blockSubmitButton = () => {
   adFormButton.disabled = true;

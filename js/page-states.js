@@ -1,5 +1,6 @@
 const adForm = document.querySelector('.ad-form');
 const filtersForm = document.querySelector('.map__filters');
+const DISABLED_CLASSES = ['ad-form--disabled', 'map__filters--disabled'];
 
 /**
  * @param {string} tag
@@ -15,8 +16,6 @@ const disableElementForm = (tag, form, isDisable = true) => {
   }
 };
 
-const DISABLED_CLASSES = ['ad-form--disabled', 'map__filters--disabled'];
-
 const switchAdFormState = (isDisable = true) => {
   [adForm, filtersForm].forEach((form, index) => {
     form.classList.toggle(DISABLED_CLASSES[index], isDisable);
@@ -26,4 +25,4 @@ const switchAdFormState = (isDisable = true) => {
   disableElementForm('select', filtersForm, isDisable);
 };
 
-export{switchAdFormState};
+export{ switchAdFormState };

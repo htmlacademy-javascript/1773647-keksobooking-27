@@ -30,7 +30,8 @@ getData(
 const getDataFiltered = (otherAds) => {
   renderSimilarAds(otherAds);
   onAnyFieldChange(debounce(() => compareAllFields(otherAds), RERENDER_DELAY));
-  onResetButtonClick(() => compareAllFields(otherAds));};
+  onResetButtonClick(() => compareAllFields(otherAds));
+};
 
 adForm.addEventListener('reset', resetCoordinate);
 
