@@ -31,7 +31,7 @@ const markUpFeatures = (card, features) => {
 
 /**
  * @param {Element} cardElement
- * @param {String[]} photos
+ * @param {String[]} [photos]
 */
 const markUpPhotos = (cardElement, photos) => {
 
@@ -40,7 +40,7 @@ const markUpPhotos = (cardElement, photos) => {
   const photoTemplate = cardElement.querySelector('.popup__photo');
   photoWrapper.removeChild(photoTemplate);
 
-  if(photos.length === 0) {
+  if(photos === undefined || photos.length === 0) {
     return cardElement.remove(photoTemplate);
   }
 

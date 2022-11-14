@@ -1,5 +1,7 @@
 import { createAdPinMarker } from './map.js';
 import { showAlert } from './utils.js';
+import { getAllLocations } from './locations.js';
+import { setAdPins } from './map.js';
 
 const OFFERS_COUNT = 10;
 const FILTER_DEFAULT = 'any';
@@ -8,12 +10,23 @@ const priceHousing = {
   MAX: 50000,
 };
 
-const filterElement = document.querySelector('.map__filters');
+/** @type {HTMLFormElement} */
+const filterForm = document.querySelector('.map__filters');
 
-const compareType = (type) => {
-  const typeField = filterElement.querySelector('#housing-type');
-  return type === typeField.value || typeField.value === 'any';
-};
+filterForm.addEventListener('input', ({target}) => {
+  if(target === filterForm['housing-type']) {
+    const locations = getAllLocations();
+    // console.log(locations);
+    const filteredLocations = locations.filter(({offer}) => offer.type === filterForm['housing-type'].value);
+    // console.log(filteredLocations);
+    setAdPins(filteredLocations);
+  }
+});
+
+// const compareType = (type) => {
+//   const typeField = filterForm.querySelector('#housing-type');
+//   return type === typeField.value || typeField.value === 'any';
+// };
 
 /** Фильтрация по прайсу */
 const filterByPrice = (offer, price) => {
@@ -31,18 +44,18 @@ const filterByPrice = (offer, price) => {
 
 /** Устанавливает взаимосвязь между фильтром и объялениями */
 const comparePrice = (price) => {
-  const priceField = filterElement.querySelector('#housing-price');
+  const priceField = filterForm.querySelector('#housing-price');
   const priceRange = filterByPrice(price);
   return priceRange === priceField.value || priceField.value === FILTER_DEFAULT;
 };
 
 const compareRooms = (rooms) => {
-  const roomsField = filterElement.querySelector('#housing-rooms');
+  const roomsField = filterForm.querySelector('#housing-rooms');
   return rooms.toString() === roomsField.value || roomsField.value === FILTER_DEFAULT;
 };
 
 const compareGuests = (guests) => {
-  const guestsField = filterElement.querySelector('#housing-guests');
+  const guestsField = filterForm.querySelector('#housing-guests');
   return guests.toString() === guestsField.value || guestsField.value === FILTER_DEFAULT;
 };
 
@@ -57,13 +70,13 @@ const getcheckedCheckboxes = (featuresArray) => {
 };
 
 const compareFeatures = (features) => {
-  const featuresCheckbox = filterElement.querySelectorAll('.map__checkbox');
+  const featuresCheckbox = filterForm.querySelectorAll('.map__checkbox');
   const checkedFeatures = getcheckedCheckboxes(featuresCheckbox);
   return checkedFeatures.length === 0 || features && checkedFeatures.every((element) => features.includes(element));
 };
 
 /** Функция для сравнения всех полей */
-let offers = [];
+const offers = [];
 const compareAllFields = () => {
 
   const filteredOffers = [];
@@ -90,11 +103,11 @@ const compareAllFields = () => {
   return filteredOffers;
 };
 
-const resetFilters = () => filterElement.reset();
+const resetFilters = () => filterForm.reset();
 
 const onAnyFieldChange = (cb) => {
   const mapFeatures = document.querySelectorAll('[name="features"]');
-  filterElement.forEach((item) => item.addEventListener('change', cb));
+  filterForm.forEach((item) => item.addEventListener('change', cb));
   mapFeatures.forEach((item) => item.addEventListener('change', cb));
 };
 
