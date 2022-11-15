@@ -118,8 +118,8 @@ filterForm.addEventListener('input', ({target}) => {
     }
   };
 
-  const filtered = debounce(filteredAccommodations, RERENDER_DELAY);
-  filtered();
+  const setOnFilterChange = debounce(filteredAccommodations, RERENDER_DELAY);
+  setOnFilterChange();
 });
 
 export { filterForm };
