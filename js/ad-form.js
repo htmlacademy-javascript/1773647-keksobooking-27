@@ -50,6 +50,7 @@ const setCoordinates = (location) => {
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
 
+/** Синхронизация полей время заезда и выезда */
 timeInSelect.addEventListener('change', () => {
   timeoutSelect.value = timeInSelect.value;
 });

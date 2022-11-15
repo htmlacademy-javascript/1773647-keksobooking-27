@@ -11,10 +11,6 @@ const RERENDER_DELAY = 1000;
 
 /** @type {HTMLFormElement} */
 const filterForm = document.querySelector('.map__filters');
-// const selectType = filterForm['housing-type'];
-// const selectPrice = filterForm['housing-price'];
-// const selectRooms = filterForm['housing-rooms'];
-// const selectGuests = filterForm['housing-guests'];
 
 const {
   ['housing-type']: selectType,
@@ -22,13 +18,6 @@ const {
   ['housing-rooms']: selectRooms,
   ['housing-guests']: selectGuests,
 } = filterForm;
-
-// const checkboxWifi = filterForm['filter-wifi'];
-// const checkboxDishwasher = filterForm['filter-dishwasher'];
-// const checkboxParking = filterForm['filter-parking'];
-// const checkboxWasher = filterForm['filter-washer'];
-// const checkboxElevator = filterForm['filter-elevator'];
-// const checkboxConditioner = filterForm['filter-conditioner'];
 
 const {
   ['filter-wifi']: checkboxWifi,

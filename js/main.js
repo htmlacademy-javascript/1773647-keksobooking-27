@@ -24,6 +24,7 @@ const resetFilters = () => filterForm.reset();
 
 resetCoordinate();
 resetFilters();
+adForm.addEventListener('reset', resetCoordinate);
 
 // const onLoadLocations = (location) => {
 //   setAdPins();
@@ -35,8 +36,6 @@ getData(
     setAdPins(location);
   },
   showAlert,);
-
-adForm.addEventListener('reset', resetCoordinate);
 
 const onSuccess = () => {
   showSuccess();
