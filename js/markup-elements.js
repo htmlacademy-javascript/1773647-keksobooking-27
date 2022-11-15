@@ -44,7 +44,7 @@ const markUpPhotos = (cardElement, photos) => {
     return cardElement.remove(photoTemplate);
   }
 
-  for( const photo of photos){
+  for(const photo of photos){
 
     /** @type {HTMLImageElement} */
     const photoElement = photoTemplate.cloneNode();

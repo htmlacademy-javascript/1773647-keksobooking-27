@@ -8,19 +8,35 @@ const priceHousing = {
 
 /** @type {HTMLFormElement} */
 const filterForm = document.querySelector('.map__filters');
-const selectType = filterForm['housing-type'];
-const selectPrice = filterForm['housing-price'];
-const selectRooms = filterForm['housing-rooms'];
-const selectGuests = filterForm['housing-guests'];
+// const selectType = filterForm['housing-type'];
+// const selectPrice = filterForm['housing-price'];
+// const selectRooms = filterForm['housing-rooms'];
+// const selectGuests = filterForm['housing-guests'];
 
-const checkboxWifi = filterForm['filter-wifi'];
-const checkboxDishwasher = filterForm['filter-dishwasher'];
-const checkboxParking = filterForm['filter-parking'];
-const checkboxWasher = filterForm['filter-washer'];
-const checkboxElevator = filterForm['filter-elevator'];
-const checkboxConditioner = filterForm['filter-conditioner'];
+const {
+  ['housing-type']: selectType,
+  ['housing-price']: selectPrice,
+  ['housing-rooms']: selectRooms,
+  ['housing-guests']: selectGuests,
+} = filterForm;
 
-const checkboxes = [
+// const checkboxWifi = filterForm['filter-wifi'];
+// const checkboxDishwasher = filterForm['filter-dishwasher'];
+// const checkboxParking = filterForm['filter-parking'];
+// const checkboxWasher = filterForm['filter-washer'];
+// const checkboxElevator = filterForm['filter-elevator'];
+// const checkboxConditioner = filterForm['filter-conditioner'];
+
+const {
+  ['filter-wifi']: checkboxWifi,
+  ['filter-parking']: checkboxDishwasher,
+  ['filter-dishwasher']: checkboxParking,
+  ['filter-elevator']: checkboxElevator,
+  ['filter-washer']: checkboxWasher,
+  ['filter-conditioner']: checkboxConditioner,
+} = filterForm;
+
+const checkboxesFilter = [
   checkboxWifi,
   checkboxDishwasher,
   checkboxParking,
@@ -28,6 +44,28 @@ const checkboxes = [
   checkboxElevator,
   checkboxConditioner
 ];
+
+/**
+ * @param {{offer: {features: String[]}}} offer
+ * @param {String[]} name
+ * @returns
+ */
+const filterBycheckbox = (offer, name) => {
+  switch (name) {
+    case 'wifi':
+      return offer.features && offer.features.includes('wifi');
+    case 'dishwasher':
+      return offer.features && offer.features.includes('dishwasher');
+    case 'parking':
+      return offer.features && offer.features.includes('parking');
+    case 'washer':
+      return offer.features && offer.features.includes('washer');
+    case 'elevator':
+      return offer.features && offer.features.includes('elevator');
+    case 'conditioner':
+      return offer.features && offer.features.includes('conditioner');
+  }
+};
 
 /**
    * @param {{offer: {price: Number}}} offer
@@ -44,23 +82,6 @@ const filterByPrice = (offer, price) => {
       return offer.price < priceHousing.MAX && offer.price > priceHousing.MIN;
     case 'high':
       return offer.price >= priceHousing.MAX;
-  }
-};
-
-const filterBycheckbox = (offer, name) => {
-  switch (name) {
-    case 'wifi':
-      return offer.features && offer.features.includes('wifi');
-    case 'dishwasher':
-      return offer.features && offer.features.includes('dishwasher');
-    case 'parking':
-      return offer.features && offer.features.includes('parking');
-    case 'washer':
-      return offer.features && offer.features.includes('washer');
-    case 'elevator':
-      return offer.features && offer.features.includes('elevator');
-    case 'conditioner':
-      return offer.features && offer.features.includes('conditioner');
   }
 };
 
@@ -87,10 +108,10 @@ filterForm.addEventListener('input', ({target}) => {
     setAdPins(filteredGuests);
   }
 
-  if (checkboxes.includes(target)) {
-    const filtred = locations.filter(({ offer }) => filterBycheckbox(offer, target.value));
+  if (checkboxesFilter.includes(target)) {
+    const filtred = locations.filter(({offer}) => filterBycheckbox(offer, target.value));
     setAdPins(filtred);
   }
 });
 
-export { filterForm};
+export { filterForm };

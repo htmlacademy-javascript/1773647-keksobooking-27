@@ -7,7 +7,6 @@ const roomsToCapacity = {
 };
 
 /**
- *
  * @param {HTMLSelectElement} capacitySelect
  * @param {HTMLSelectElement} roomsSelect
  * @param {*} pristine
@@ -15,6 +14,7 @@ const roomsToCapacity = {
 
 export const initCapacityAndRooms = (capacitySelect, roomsSelect, pristine) => {
   pristine.addValidator(capacitySelect, (value) => {
+
     /** @type {string} */
     const roomAmount = roomsSelect.value;
     return roomsToCapacity[+roomAmount].includes(value);
