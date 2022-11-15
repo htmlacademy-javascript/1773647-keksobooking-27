@@ -1,10 +1,13 @@
 import { getAllLocations } from './locations.js';
 import { setAdPins } from './map.js';
+import { debounce } from './utils.js';
 
 const priceHousing = {
   MIN: 10000,
   MAX: 50000,
 };
+
+const RERENDER_DELAY = 1000;
 
 /** @type {HTMLFormElement} */
 const filterForm = document.querySelector('.map__filters');
@@ -108,10 +111,15 @@ filterForm.addEventListener('input', ({target}) => {
     setAdPins(filteredGuests);
   }
 
-  if (checkboxesFilter.includes(target)) {
-    const filtred = locations.filter(({offer}) => filterBycheckbox(offer, target.value));
-    setAdPins(filtred);
-  }
+  const filteredAccommodations = () => {
+    if (checkboxesFilter.includes(target)) {
+      const filtred = locations.filter(({offer}) => filterBycheckbox(offer, target.value));
+      setAdPins(filtred);
+    }
+  };
+
+  const filtered = debounce(filteredAccommodations, RERENDER_DELAY);
+  filtered();
 });
 
 export { filterForm };
