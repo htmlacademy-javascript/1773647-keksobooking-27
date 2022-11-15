@@ -1,12 +1,11 @@
-import { adForm, setCoordinates, setUserFormSubmit, onResetButtonClick } from './ad-form.js';
+import { adForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
 import { switchAdFormState } from './page-states.js';
 import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
 import { showAlert, debounce } from './utils.js';
 import { showSuccess, showError } from './modal.js';
-import './filter.js';
+import { filterForm } from './filter.js';
 import { seveLocations } from './locations.js';
-// import { compareAllFields, onAnyFieldChange, renderSimilarAds } from './filter.js';
 
 const INIT_COORDS = {
   lat: 35.682339,
@@ -23,7 +22,10 @@ const resetCoordinate = () => {
   initMap(INIT_COORDS);
 };
 
+const resetFilters = () => filterForm.reset();
+
 resetCoordinate();
+resetFilters();
 
 // const onLoadLocations = (location) => {
 //   setAdPins();
@@ -43,6 +45,7 @@ getData(
 // };
 
 adForm.addEventListener('reset', resetCoordinate);
+filterForm.addEventListener('reset', resetFilters);
 
 const onSuccess = () => {
   showSuccess();
@@ -52,5 +55,3 @@ const onSuccess = () => {
 setUserFormSubmit(async (data) => {
   await sendData(onSuccess, showError, data);
 });
-
-// getDataFiltered();

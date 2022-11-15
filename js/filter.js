@@ -93,6 +93,4 @@ filterForm.addEventListener('input', ({target}) => {
   }
 });
 
-const resetFilters = () => filterForm.reset();
-
-export { resetFilters };
+export { filterForm};
