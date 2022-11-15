@@ -1,10 +1,6 @@
-// import { createAdPinMarker } from './map.js';
-// import { showAlert } from './utils.js';
 import { getAllLocations } from './locations.js';
 import { setAdPins } from './map.js';
 
-// const OFFERS_COUNT = 10;
-// const FILTER_DEFAULT = 'any';
 const priceHousing = {
   MIN: 10000,
   MAX: 50000,
@@ -16,7 +12,22 @@ const selectType = filterForm['housing-type'];
 const selectPrice = filterForm['housing-price'];
 const selectRooms = filterForm['housing-rooms'];
 const selectGuests = filterForm['housing-guests'];
-// const selectFeatures = filterForm['housing-features'];
+
+const checkboxWifi = filterForm['filter-wifi'];
+const checkboxDishwasher = filterForm['filter-dishwasher'];
+const checkboxParking = filterForm['filter-parking'];
+const checkboxWasher = filterForm['filter-washer'];
+const checkboxElevator = filterForm['filter-elevator'];
+const checkboxConditioner = filterForm['filter-conditioner'];
+
+const checkboxes = [
+  checkboxWifi,
+  checkboxDishwasher,
+  checkboxParking,
+  checkboxWasher,
+  checkboxElevator,
+  checkboxConditioner
+];
 
 /**
    * @param {{offer: {price: Number}}} offer
@@ -36,41 +47,52 @@ const filterByPrice = (offer, price) => {
   }
 };
 
+const filterBycheckbox = (offer, name) => {
+  switch (name) {
+    case 'wifi':
+      return offer.features && offer.features.includes('wifi');
+    case 'dishwasher':
+      return offer.features && offer.features.includes('dishwasher');
+    case 'parking':
+      return offer.features && offer.features.includes('parking');
+    case 'washer':
+      return offer.features && offer.features.includes('washer');
+    case 'elevator':
+      return offer.features && offer.features.includes('elevator');
+    case 'conditioner':
+      return offer.features && offer.features.includes('conditioner');
+  }
+};
+
 filterForm.addEventListener('input', ({target}) => {
+  const locations = getAllLocations();
+
   if(target === selectType) {
-    const locations = getAllLocations();
     const filteredLocations = locations.filter(({offer}) => offer.type === selectType.value);
     setAdPins(filteredLocations);
   }
 
   if(target === selectPrice) {
-    const price = getAllLocations();
-    const priceRange = filterByPrice(price);
-    // console.log(priceRange);
-    const filteredPrice = price.filter(({offer}) => offer.price === +selectPrice.value || priceRange === +selectPrice.value,);
-    // console.log(filteredPrice);
+    const filteredPrice = locations.filter(({ offer }) => filterByPrice(offer, selectPrice.value));
     setAdPins(filteredPrice);
   }
 
   if(target === selectRooms) {
-    const rooms = getAllLocations();
-    const filteredRooms = rooms.filter(({offer}) => offer.rooms === +selectRooms.value);
+    const filteredRooms = locations.filter(({offer}) => offer.rooms === +selectRooms.value);
     setAdPins(filteredRooms);
   }
 
   if(target === selectGuests) {
-    const guests = getAllLocations();
-    const filteredGuests = guests.filter(({offer}) => offer.guests === +selectGuests.value);
+    const filteredGuests = locations.filter(({offer}) => offer.guests === +selectGuests.value);
     setAdPins(filteredGuests);
   }
 
-  /**
-   * @param {{offer: {features: String[]}}} offer
-   * @param {String[]} features
-   * @return {Boolean}
-   */
-  // const isFilteringFeatures = (offer, features) => features.every((feature) => offer.offer.features.indexOf(feature) !== -1);
-  // console.log(isFilteringFeatures);
+  if (checkboxes.includes(target)) {
+    const filtred = locations.filter(({ offer }) => filterBycheckbox(offer, target.value));
+    setAdPins(filtred);
+  }
 });
 
-// const resetFilters = () => filterForm.reset();
+const resetFilters = () => filterForm.reset();
+
+export { resetFilters };

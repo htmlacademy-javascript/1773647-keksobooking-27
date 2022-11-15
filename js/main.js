@@ -25,9 +25,9 @@ const resetCoordinate = () => {
 
 resetCoordinate();
 
-const onLoadLocations = (location) => {
-  setAdPins();
-};
+// const onLoadLocations = (location) => {
+//   setAdPins();
+// };
 
 getData(
   (location) => {
