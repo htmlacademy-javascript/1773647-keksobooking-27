@@ -134,7 +134,8 @@ const setUserFormSubmit = (cb) => {
 
 const onResetButtonClick = (cb) => {
   resetButton.addEventListener('click', cb);
+  adFormButton.addEventListener('click', cb);
 };
 
-export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement, resetButton};
+export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement };
 

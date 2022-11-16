@@ -1,4 +1,4 @@
-import { adForm, setCoordinates, setUserFormSubmit, sliderElement, resetButton } from './ad-form.js';
+import { adForm, setCoordinates, setUserFormSubmit, sliderElement, onResetButtonClick } from './ad-form.js';
 import { switchAdFormState } from './page-states.js';
 import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
@@ -23,9 +23,7 @@ const resetCoordinate = () => {
 resetCoordinate();
 resetFilters();
 
-// adForm.addEventListener('reset', resetCoordinate);
-
-resetButton.addEventListener('click', resetFilters);
+onResetButtonClick(resetFilters);
 
 adForm.addEventListener('reset', () => {
   sliderElement.noUiSlider.set(0);
