@@ -46,6 +46,8 @@ const onSuccess = () => {
   adForm.reset();
 };
 
+setUserFormSubmit(resetFilters);
+
 setUserFormSubmit(async (data) => {
   await sendData(onSuccess, showError, data);
 });

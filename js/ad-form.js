@@ -128,14 +128,14 @@ const setUserFormSubmit = (cb) => {
       blockSubmitButton();
       await cb(new FormData(evt.target));
       unblockSubmitButton();
+      adFormButton.addEventListener('click', cb);
     }
   });
 };
 
 const onResetButtonClick = (cb) => {
   resetButton.addEventListener('click', cb);
-  adFormButton.addEventListener('click', cb);
+  // adFormButton.addEventListener('click', cb);
 };
 
 export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement };
-
