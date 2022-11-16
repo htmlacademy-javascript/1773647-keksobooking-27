@@ -19,6 +19,7 @@ const validationMessage = {
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
 
+const resetButton = adForm.querySelector('.ad-form__reset');
 const sliderElement = document.querySelector('.ad-form__slider');
 const adFormButton = adForm.querySelector('.ad-form__submit');
 
@@ -132,9 +133,8 @@ const setUserFormSubmit = (cb) => {
 };
 
 const onResetButtonClick = (cb) => {
-  const resetButton = adForm.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', cb);
 };
 
-export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement};
+export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement, resetButton};
 
