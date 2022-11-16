@@ -103,9 +103,9 @@ sliderElement.setAttribute('disabled', true);
 
 sliderElement.removeAttribute('disabled');
 
-adForm.addEventListener('reset', () => {
-  sliderElement.noUiSlider.set(0);
-});
+// adForm.addEventListener('reset', () => {
+//   sliderElement.noUiSlider.set(0);
+// });
 
 const blockSubmitButton = () => {
   adFormButton.disabled = true;
@@ -136,5 +136,5 @@ const onResetButtonClick = (cb) => {
   resetButton.addEventListener('click', cb);
 };
 
-export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick};
+export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement};
 

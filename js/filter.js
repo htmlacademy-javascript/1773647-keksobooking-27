@@ -59,9 +59,7 @@ const isFilteringByPrice = (offer, price) => {
 
 const isFilteringByValue = (value, filterValue) => filterValue === FILTER_ALL ? true : String(value) === String(filterValue);
 
-const isFilteringLocation = (location, filters) => {
-  const { offer } = location;
-
+const isFilteringLocation = ({offer}, filters) => {
   const filteredByType = isFilteringByValue(offer.type, filters.type);
   if (!filteredByType) {
     return false;
@@ -115,4 +113,6 @@ filterForm.addEventListener('input', () => {
   setAdPinsDebounce();
 });
 
-export { filterForm };
+const resetFilters = () => filterForm.reset();
+
+export { filterForm, resetFilters };

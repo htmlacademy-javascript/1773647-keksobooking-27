@@ -1,10 +1,10 @@
-import { adForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
+import { adForm, setCoordinates, setUserFormSubmit, sliderElement } from './ad-form.js';
 import { switchAdFormState } from './page-states.js';
 import { initMap, setOnMapLoad, setAdPins } from './map.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
 import { showSuccess, showError } from './modal.js';
-import { filterForm } from './filter.js';
+import { filterForm, resetFilters } from './filter.js';
 import { seveLocations } from './locations.js';
 
 const INIT_COORDS = {
@@ -20,11 +20,16 @@ const resetCoordinate = () => {
   initMap(INIT_COORDS);
 };
 
-const resetFilters = () => filterForm.reset();
-
 resetCoordinate();
 resetFilters();
-adForm.addEventListener('reset', resetCoordinate);
+
+filterForm.addEventListener('reset', resetFilters);
+// adForm.addEventListener('reset', resetCoordinate);
+
+adForm.addEventListener('reset', () => {
+  sliderElement.noUiSlider.set(0);
+  resetCoordinate();
+});
 
 // const onLoadLocations = (location) => {
 //   setAdPins();
