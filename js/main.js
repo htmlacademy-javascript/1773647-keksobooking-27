@@ -4,7 +4,6 @@ import { initMap, setOnMapLoad } from './map.js';
 import { getData } from './api.js';
 import { showAlert } from './utils.js';
 import { initFilter, resetFilters } from './filter.js';
-import './image.js';
 import { resetPhoto } from './image.js';
 
 const INIT_COORDS = {
