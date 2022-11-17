@@ -1,6 +1,6 @@
 let allLocations = [];
 
-export const seveLocations = (locations) => {
+export const saveLocations = (locations) => {
   allLocations = locations;
 };
 

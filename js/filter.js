@@ -12,6 +12,9 @@ const FILTER_ALL = 'any';
 /** @type {HTMLFormElement} */
 const filterForm = document.querySelector('.map__filters');
 
+/** @type {RadioNodeList} */
+const features = filterForm.features;
+
 const createFilters = () => ({
   type: filterForm['housing-type'].value,
   price: filterForm['housing-price'].value,
@@ -19,17 +22,17 @@ const createFilters = () => ({
   guests: filterForm['housing-guests'].value,
 });
 
-const createFeatures = () => {
-  const checkboxes = [
-    filterForm['filter-wifi'],
-    filterForm['filter-parking'],
-    filterForm['filter-dishwasher'],
-    filterForm['filter-elevator'],
-    filterForm['filter-washer'],
-    filterForm['filter-conditioner'],
-  ];
-
-  return checkboxes.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+/**
+ * @returns {string[]}
+ */
+const getCheckedFeatures = () => {
+  const result = [];
+  for(const feature of features) {
+    if(feature.checked) {
+      result.push(feature.value);
+    }
+  }
+  return result;
 };
 
 const isFilteringByFeatures = (offer, features) =>
@@ -92,11 +95,10 @@ const filterLocationsByFilters = (locations) => {
 
 /** Фильтруем локации по удобствам */
 const filterLocationsByFeatures = (locations) => {
-  const features = createFeatures();
+  const checkedFeatures = getCheckedFeatures();
 
-  return locations.filter(({ offer }) => isFilteringByFeatures(offer, features));
+  return locations.filter(({ offer }) => isFilteringByFeatures(offer, checkedFeatures));
 };
-
 
 filterForm.addEventListener('input', () => {
   const locations = getAllLocations();
@@ -104,12 +106,9 @@ filterForm.addEventListener('input', () => {
 
   setAdPins(filteredLocations);
 
-  const filterByFeatures = () => {
-    const filteredLocationsByFeatures = filterLocationsByFeatures(filteredLocations);
-    setAdPins(filteredLocationsByFeatures);
-  };
-
-  const setAdPinsDebounce = debounce(filterByFeatures, RERENDER_DELAY);
+  const filteredLocationsByFeatures = filterLocationsByFeatures(filteredLocations);
+  const renderPins = () => setAdPins(filteredLocationsByFeatures);
+  const setAdPinsDebounce = debounce(renderPins, RERENDER_DELAY);
   setAdPinsDebounce();
 });
 

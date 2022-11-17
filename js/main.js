@@ -5,7 +5,7 @@ import { getData, sendData } from './api.js';
 import { showAlert } from './utils.js';
 import { showSuccess, showError } from './modal.js';
 import { resetFilters } from './filter.js';
-import { seveLocations } from './locations.js';
+import { saveLocations } from './locations.js';
 
 const INIT_COORDS = {
   lat: 35.682339,
@@ -36,7 +36,7 @@ adForm.addEventListener('reset', () => {
 
 getData(
   (location) => {
-    seveLocations(location);
+    saveLocations(location);
     setAdPins(location);
   },
   showAlert,);
