@@ -1,4 +1,3 @@
-
 const roomsToCapacity = {
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
@@ -7,14 +6,15 @@ const roomsToCapacity = {
 };
 
 /**
- *
  * @param {HTMLSelectElement} capacitySelect
  * @param {HTMLSelectElement} roomsSelect
  * @param {*} pristine
  */
 
 export const initCapacityAndRooms = (capacitySelect, roomsSelect, pristine) => {
+
   pristine.addValidator(capacitySelect, (value) => {
+
     /** @type {string} */
     const roomAmount = roomsSelect.value;
     return roomsToCapacity[+roomAmount].includes(value);
@@ -22,15 +22,18 @@ export const initCapacityAndRooms = (capacitySelect, roomsSelect, pristine) => {
   () => {
     const roomAmout = roomsSelect.value;
 
-    if (roomAmout === '100') {
-      return 'Только не для гостей';
+    if(roomAmout === '1') {
+      return 'Для 1 гостя';
     }
-
-    /** @type {string[]} */
-    const options = roomsToCapacity[roomAmout];
-    const onlyAvailable = `${options.slice(0, -1).join(', ')} или 1 гостя`;
-
-    return `${roomsSelect.selectedOptions[0].innerText} доступно только ${onlyAvailable}`;
+    if (roomAmout === '2') {
+      return 'Для 1 или 2 гостей';
+    }
+    if (roomAmout === '3') {
+      return 'Для 1, 2 или 3 гостей';
+    }
+    if (roomAmout === '100') {
+      return 'Не для гостей';
+    }
   });
 
   roomsSelect.addEventListener('input', () => pristine.validate(capacitySelect));

@@ -18,17 +18,14 @@ export const getRandomInteger = (from, to) => {
 */
 
 export const checkFunctionArguments = (first, second) => {
-  // Проверяем числа на типы
   if (typeof first !== 'number' || typeof second !== 'number') {
     return null;
   }
 
-  // Проверяем, что число положительное
   if (first < 0 || second < 0) {
     return null;
   }
 
-  // Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами
   return second < first ? [first, second] : [second, first];
 };
 
@@ -64,22 +61,19 @@ export const getRandomIntegerWithChecks = (a, b) => {
 export const getRandomFloat = (a, b, precision = 1) => {
   const resultCheck = checkFunctionArguments(a, b);
 
-  /** Проверяем числа на типы */
   if (resultCheck === null || typeof precision !== 'number' || precision < 0) {
     return NaN;
   }
 
-  /** Проверяем, что число положительное */
   if (a < 0 || b < 0 || precision < 0) {
     return NaN;
   }
 
-  /** Поддержка передачи чисел в любом порядке, т.е. если b меньше а, то они меняются местами */
   [a, b] = resultCheck;
 
   /**
    * Получаем рандомное число от 0 до 1
-   * Уножаем на разницу между переданными числами и прибавляем второе значение
+   * Умножаем на разницу между переданными числами и прибавляем второе значение
   */
   const result = b + Math.random() * (a - b);
 

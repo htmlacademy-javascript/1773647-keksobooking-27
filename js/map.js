@@ -40,6 +40,7 @@ const initMap = (coordinate) => {
 
   mainPinMarker.setLatLng(coordinate);
   mainPinMarker.addTo(map);
+  setCoordinates(coordinate);
 };
 
 /** Запись координат главного маркера для поля формы - Адрес */
@@ -75,4 +76,4 @@ const setAdPins = (locations) => {
  */
 const setOnMapLoad = (cb) => map.on('load', cb);
 
-export {initMap, setAdPins, setOnMapLoad};
+export {initMap, setAdPins, setOnMapLoad, createAdPinMarker};

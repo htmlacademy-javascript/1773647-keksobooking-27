@@ -7,7 +7,6 @@ const typeToMinPrice = {
 };
 
 /**
- *
  * @param {HTMLSelectElement} typeSelect
  * @param {HTMLInputElement} priceInput
  * @param {*} pristine Pristine instance
