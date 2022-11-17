@@ -1,5 +1,8 @@
 import { initPriceAndType } from './form/price.js';
 import { initCapacityAndRooms } from './form/capacity.js';
+import { showError, showSuccess } from './modal.js';
+import { resetFilters } from './filter.js';
+import { sendData } from './api.js';
 
 const PRISTINE_OPTIONS = {
   classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
@@ -18,8 +21,6 @@ const validationMessage = {
 
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
-
-const resetButton = adForm.querySelector('.ad-form__reset');
 const sliderElement = document.querySelector('.ad-form__slider');
 const adFormButton = adForm.querySelector('.ad-form__submit');
 
@@ -104,10 +105,6 @@ sliderElement.setAttribute('disabled', true);
 
 sliderElement.removeAttribute('disabled');
 
-// adForm.addEventListener('reset', () => {
-//   sliderElement.noUiSlider.set(0);
-// });
-
 const blockSubmitButton = () => {
   adFormButton.disabled = true;
   adFormButton.textContent = 'Отправляю...';
@@ -118,24 +115,22 @@ const unblockSubmitButton = () => {
   adFormButton.textContent = 'Опубликовать';
 };
 
+const onSuccess = () => {
+  showSuccess();
+  adForm.reset();
+  resetFilters();
+};
+
 /** Отправка формы */
-const setUserFormSubmit = (cb) => {
-  adForm.addEventListener('submit', async (evt) => {
-    evt.preventDefault();
+adForm.addEventListener('submit', async (evt) => {
+  evt.preventDefault();
 
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      await cb(new FormData(evt.target));
-      unblockSubmitButton();
-      adFormButton.addEventListener('click', cb);
-    }
-  });
-};
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    await sendData(onSuccess, showError, new FormData(adForm));
+    unblockSubmitButton();
+  }
+});
 
-const onResetButtonClick = (cb) => {
-  resetButton.addEventListener('click', cb);
-  // adFormButton.addEventListener('click', cb);
-};
-
-export {setUserFormSubmit, setCoordinates, adForm, onResetButtonClick, sliderElement };
+export { setCoordinates, adForm, sliderElement };

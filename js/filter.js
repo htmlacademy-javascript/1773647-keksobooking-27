@@ -1,4 +1,3 @@
-import { getAllLocations } from './locations.js';
 import { setAdPins } from './map.js';
 import { debounce } from './utils.js';
 
@@ -15,7 +14,7 @@ const filterForm = document.querySelector('.map__filters');
 /** @type {RadioNodeList} */
 const features = filterForm.features;
 
-const createFilters = () => ({
+const getFiltersValue = () => ({
   type: filterForm['housing-type'].value,
   price: filterForm['housing-price'].value,
   rooms: filterForm['housing-rooms'].value,
@@ -35,13 +34,6 @@ const getCheckedFeatures = () => {
   return result;
 };
 
-const isFilteringByFeatures = (offer, features) =>
-  offer.features ?
-    features.every((feature) =>
-      offer.features.includes(feature)
-    ) :
-    false;
-
 /**
  * @param {{offer: {price: Number}}} offer
  * @param {Number} price
@@ -60,58 +52,58 @@ const isFilteringByPrice = (offer, price) => {
   }
 };
 
-const isFilteringByValue = (value, filterValue) => filterValue === FILTER_ALL ? true : String(value) === String(filterValue);
+/**
+ * Проверяет по ключам
+ * @param {string | number} value
+ * @param {string} filterValue
+ * @returns
+ */
+const isFilteringByValue = (value, filterValue) => filterValue === FILTER_ALL || String(value) === String(filterValue);
 
-const isFilteringLocation = ({offer}, filters) => {
-  const filteredByType = isFilteringByValue(offer.type, filters.type);
-  if (!filteredByType) {
-    return false;
-  }
-  const filteredByRooms = isFilteringByValue(offer.rooms, filters.rooms);
-  if (!filteredByRooms) {
-    return false;
-  }
-
-  const filteredByGuests = isFilteringByValue(offer.guests, filters.guests);
-  if (!filteredByGuests) {
-    return false;
-  }
-
-  const filteredByPrice = isFilteringByPrice(offer, filters.price);
-  if (!filteredByPrice) {
-    return false;
-  }
-
-  return true;
-};
-
-/** Фильтруем локации по фильтрам */
-const filterLocationsByFilters = (locations) => {
-  const filters = createFilters();
-  const filteredLocations = locations.filter((location) => isFilteringLocation(location, filters));
-
-  return filteredLocations;
-};
-
-/** Фильтруем локации по удобствам */
-const filterLocationsByFeatures = (locations) => {
+const getFilterHandler = (allLocations) => () => {
+  const filterValue = getFiltersValue();
   const checkedFeatures = getCheckedFeatures();
 
-  return locations.filter(({ offer }) => isFilteringByFeatures(offer, checkedFeatures));
-};
+  const filteredLocations = allLocations.filter(({offer}) => {
+    if(!isFilteringByValue(offer.type, filterValue.type)) {
+      return false;
+    }
 
-filterForm.addEventListener('input', () => {
-  const locations = getAllLocations();
-  const filteredLocations = filterLocationsByFilters(locations);
+    if(!isFilteringByValue(offer.rooms, filterValue.rooms)) {
+      return false;
+    }
+
+    if(!isFilteringByValue(offer.guests, filterValue.guests)) {
+      return false;
+    }
+
+    if(!isFilteringByPrice(offer.price, filterValue.price)) {
+      return false;
+    }
+
+    if(checkedFeatures.length === 0) {
+      return true;
+    }
+
+    if(offer.features === undefined) {
+      return true;
+    }
+
+    return checkedFeatures.every((feature) =>
+      offer.features.includes(feature)
+    );
+  });
 
   setAdPins(filteredLocations);
+};
 
-  const filteredLocationsByFeatures = filterLocationsByFeatures(filteredLocations);
-  const renderPins = () => setAdPins(filteredLocationsByFeatures);
-  const setAdPinsDebounce = debounce(renderPins, RERENDER_DELAY);
-  setAdPinsDebounce();
-});
+const initFilter = (allLocations) => {
+  setAdPins(allLocations);
+  const debouncedInputFilter = debounce(getFilterHandler(allLocations), RERENDER_DELAY);
+  filterForm.addEventListener('input', debouncedInputFilter);
+  filterForm.addEventListener('reset', debouncedInputFilter);
+};
 
 const resetFilters = () => filterForm.reset();
 
-export { filterForm, resetFilters };
+export { initFilter, resetFilters };
