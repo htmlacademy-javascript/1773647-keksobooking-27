@@ -9,6 +9,7 @@ const showAlert = (message) => {
   alertContainer.style.right = '0';
   alertContainer.style.padding = '20px 15px';
   alertContainer.style.fontSize = '34px';
+  alertContainer.style.color = 'white';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 

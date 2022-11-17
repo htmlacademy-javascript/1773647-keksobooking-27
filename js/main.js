@@ -1,9 +1,9 @@
-import { adForm, setCoordinates, setUserFormSubmit } from './ad-form.js';
+import { adForm, setCoordinates, sliderElement } from './ad-form.js';
 import { switchAdFormState } from './page-states.js';
-import { initMap, setOnMapLoad, setAdPins } from './map.js';
-import { getData, sendData } from './api.js';
+import { initMap, setOnMapLoad } from './map.js';
+import { getData } from './api.js';
 import { showAlert } from './utils.js';
-import { showSuccess, showError } from './modal.js';
+import { initFilter, resetFilters } from './filter.js';
 import './image.js';
 
 const INIT_COORDS = {
@@ -13,22 +13,13 @@ const INIT_COORDS = {
 
 switchAdFormState();
 setOnMapLoad(() => switchAdFormState(false));
+initMap(INIT_COORDS);
 
-const resetCoordinate = () => {
+adForm.addEventListener('reset', () => {
+  sliderElement.noUiSlider.set(0);
   setCoordinates(INIT_COORDS);
+  resetFilters();
   initMap(INIT_COORDS);
-};
-
-resetCoordinate();
-getData(setAdPins, showAlert);
-
-adForm.addEventListener('reset', resetCoordinate);
-
-const onSuccess = () => {
-  showSuccess();
-  adForm.reset();
-};
-
-setUserFormSubmit(async (data) => {
-  await sendData(onSuccess, showError, data);
 });
+
+getData(initFilter, showAlert,);

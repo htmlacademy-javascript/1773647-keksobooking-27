@@ -1,5 +1,8 @@
 import { initPriceAndType } from './form/price.js';
 import { initCapacityAndRooms } from './form/capacity.js';
+import { showError, showSuccess } from './modal.js';
+import { resetFilters } from './filter.js';
+import { sendData } from './api.js';
 
 const PRISTINE_OPTIONS = {
   classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
@@ -18,6 +21,8 @@ const validationMessage = {
 
 /** @type {HTMLFormElement} */
 const adForm = document.querySelector('.ad-form');
+const sliderElement = document.querySelector('.ad-form__slider');
+const adFormButton = adForm.querySelector('.ad-form__submit');
 
 const {
   title: {dataset: titleDataset},
@@ -47,6 +52,7 @@ const setCoordinates = (location) => {
 priceDataset.pristineRequiredMessage = validationMessage.REQUIRED;
 priceDataset.pristineMaxMessage = validationMessage.MAX_PRICE;
 
+/** Синхронизация полей время заезда и выезда */
 timeInSelect.addEventListener('change', () => {
   timeoutSelect.value = timeInSelect.value;
 });
@@ -66,8 +72,6 @@ adForm.addEventListener('submit', (evt) => {
 });
 
 /** Слайдер в поле цены */
-const sliderElement = document.querySelector('.ad-form__slider');
-
 noUiSlider.create(sliderElement, {
   range: {
     min: 0,
@@ -101,33 +105,32 @@ sliderElement.setAttribute('disabled', true);
 
 sliderElement.removeAttribute('disabled');
 
-adForm.addEventListener('reset', () => {
-  sliderElement.noUiSlider.set(0);
-});
-
-const adFormButton = adForm.querySelector('.ad-form__submit');
-
 const blockSubmitButton = () => {
   adFormButton.disabled = true;
+  adFormButton.textContent = 'Отправляю...';
 };
 
 const unblockSubmitButton = () => {
   adFormButton.disabled = false;
+  adFormButton.textContent = 'Опубликовать';
+};
+
+const onSuccess = () => {
+  showSuccess();
+  adForm.reset();
+  resetFilters();
 };
 
 /** Отправка формы */
-const setUserFormSubmit = (cb) => {
-  adForm.addEventListener('submit', async (evt) => {
-    evt.preventDefault();
+adForm.addEventListener('submit', async (evt) => {
+  evt.preventDefault();
 
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      await cb(new FormData(evt.target));
-      unblockSubmitButton();
-    }
-  });
-};
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    await sendData(onSuccess, showError, new FormData(adForm));
+    unblockSubmitButton();
+  }
+});
 
-export {setUserFormSubmit, setCoordinates, adForm};
-
+export { setCoordinates, adForm, sliderElement };
