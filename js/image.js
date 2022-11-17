@@ -52,7 +52,9 @@ createPhotoPreview(fileAvatar, previewAvatar);
 createPhotoPreview(fileChooserZone, previewZone);
 
 /** Сброс */
-resetAvatarUrl(previewAvatar, DEFAULT_AVATAR);
-resetPhotoContainer(previewZone);
+const resetPhoto = () => {
+  resetAvatarUrl(previewAvatar, DEFAULT_AVATAR);
+  resetPhotoContainer(previewZone);
+};
 
-export { createImgForPreview, resetAvatarUrl, resetPhotoContainer };
+export { createImgForPreview, resetAvatarUrl, resetPhotoContainer, resetPhoto };
