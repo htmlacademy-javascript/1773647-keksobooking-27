@@ -4,6 +4,7 @@ import { initMap, setOnMapLoad } from './map.js';
 import { getData } from './api.js';
 import { showAlert } from './utils.js';
 import { initFilter, resetFilters } from './filter.js';
+import { resetPhoto } from './image.js';
 
 const INIT_COORDS = {
   lat: 35.682339,
@@ -19,6 +20,7 @@ adForm.addEventListener('reset', () => {
   setCoordinates(INIT_COORDS);
   resetFilters();
   initMap(INIT_COORDS);
+  resetPhoto();
 });
 
 getData(initFilter, showAlert,);
