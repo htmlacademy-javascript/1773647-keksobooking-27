@@ -104,6 +104,11 @@ const initFilter = (allLocations) => {
   filterForm.addEventListener('reset', debouncedInputFilter);
 };
 
+const blockFilter = () => {
+  [filterForm].forEach((form) => {
+    form.classList.add('map__filters--disabled');});
+};
+
 const resetFilters = () => filterForm.reset();
 
-export { initFilter, resetFilters };
+export { initFilter, resetFilters, blockFilter, filterForm, };
