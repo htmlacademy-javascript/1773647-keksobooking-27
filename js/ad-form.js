@@ -106,12 +106,12 @@ sliderElement.setAttribute('disabled', true);
 sliderElement.removeAttribute('disabled');
 
 const blockSubmitButton = () => {
-  adFormButton.disabled = true;
+  adFormButton.classList.add('map__filters--disabled');
   adFormButton.textContent = 'Отправляю...';
 };
 
 const unblockSubmitButton = () => {
-  adFormButton.disabled = false;
+  adFormButton.classList.remove('map__filters--disabled');
   adFormButton.textContent = 'Опубликовать';
 };
 

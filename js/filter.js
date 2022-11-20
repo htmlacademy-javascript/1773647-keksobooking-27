@@ -1,4 +1,5 @@
 import { setAdPins } from './map.js';
+import { switchFilterState } from './page-states.js';
 import { debounce } from './utils.js';
 
 const priceHousing = {
@@ -99,6 +100,7 @@ const getFilterHandler = (allLocations) => () => {
 
 const initFilter = (allLocations) => {
   setAdPins(allLocations);
+  switchFilterState();
   const debouncedInputFilter = debounce(getFilterHandler(allLocations), RERENDER_DELAY);
   filterForm.addEventListener('input', debouncedInputFilter);
   filterForm.addEventListener('reset', debouncedInputFilter);
@@ -106,4 +108,4 @@ const initFilter = (allLocations) => {
 
 const resetFilters = () => filterForm.reset();
 
-export { initFilter, resetFilters };
+export { initFilter, resetFilters, filterForm, };

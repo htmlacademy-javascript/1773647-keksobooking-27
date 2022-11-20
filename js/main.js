@@ -1,5 +1,5 @@
 import { adForm, setCoordinates, sliderElement } from './ad-form.js';
-import { switchAdFormState } from './page-states.js';
+import { switchAdFormState, switchFilterState } from './page-states.js';
 import { initMap, setOnMapLoad } from './map.js';
 import { getData } from './api.js';
 import { showAlert } from './utils.js';
@@ -12,7 +12,8 @@ const INIT_COORDS = {
 };
 
 switchAdFormState();
-setOnMapLoad(() => switchAdFormState(false));
+switchFilterState();
+setOnMapLoad(switchAdFormState);
 initMap(INIT_COORDS);
 
 adForm.addEventListener('reset', () => {
@@ -23,4 +24,4 @@ adForm.addEventListener('reset', () => {
   resetPhoto();
 });
 
-getData(initFilter, showAlert,);
+getData(initFilter, showAlert);

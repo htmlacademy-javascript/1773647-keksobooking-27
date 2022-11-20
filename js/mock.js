@@ -7,7 +7,6 @@ const AMOUNT_OF_ADS = 10;
  * @typedef {'palace'| 'flat'| 'house'| 'bungalow'| 'hotel'} HousingType
  * @typedef {'wifi' | 'dishwasher' | 'parking' | 'washer' | 'elevator' | 'conditioner'} Feature
  */
-
 const TITLES = [
   'Квартира свободной планировки 174,1 м²',
   'Огромный пентхаус',
@@ -61,7 +60,7 @@ const mockPhoto = () => {
   return `https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/${getRandomArrayItem(URLS)}.jpg`;
 };
 
-export const mockAd = (_, index) => {
+const mockAd = (_, index) => {
 
   const randomLat = getRandomFloat(35.65, 35.7, 5);
   const randomLng = getRandomFloat(139.7, 139.8, 5);
@@ -90,4 +89,6 @@ export const mockAd = (_, index) => {
   };
 };
 
-export const adMocks = Array.from({length: AMOUNT_OF_ADS}, mockAd);
+const adMocks = Array.from({length: AMOUNT_OF_ADS}, mockAd);
+
+export { mockAd, adMocks };

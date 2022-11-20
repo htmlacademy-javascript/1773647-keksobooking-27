@@ -1,6 +1,7 @@
+import { getBEMModifier } from './utils.js';
+
 const adForm = document.querySelector('.ad-form');
 const filtersForm = document.querySelector('.map__filters');
-const DISABLED_CLASSES = ['ad-form--disabled', 'map__filters--disabled'];
 
 /**
  * @param {string} tag
@@ -16,13 +17,27 @@ const disableElementForm = (tag, form, isDisable = true) => {
   }
 };
 
-const switchAdFormState = (isDisable = true) => {
-  [adForm, filtersForm].forEach((form, index) => {
-    form.classList.toggle(DISABLED_CLASSES[index], isDisable);
-    disableElementForm('fieldset', form, isDisable);
-  });
+/**
+ * Функция, которая блокирует и разблокирует форму
+ * @param {HTMLFormElement} form
+ * @param {string[]} selectors массив CSS селекторов
+ */
+const createFormSwitcher = (form, selectors = ['fieldset']) => {
+  const disableClass = getBEMModifier(form, 'disabled');
 
-  disableElementForm('select', filtersForm, isDisable);
+  return () => {
+    form.classList.toggle(disableClass);
+
+    const isDisable = form.classList.contains(disableClass);
+
+    selectors.forEach((cssSelector) =>
+      disableElementForm(cssSelector, form, isDisable)
+    );
+  };
 };
 
-export{ switchAdFormState };
+const switchFilterState = createFormSwitcher(filtersForm, ['fieldset', 'selector']);
+
+const switchAdFormState = createFormSwitcher(adForm);
+
+export { switchAdFormState, switchFilterState };
