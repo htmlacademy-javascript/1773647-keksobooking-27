@@ -44,7 +44,7 @@ function debounce (callback, timeoutDelay = 500) {
 const getBEMModifier = (block, modifier) => {
   if(block.classList.length) {
     const className = block.classList[0];
-    return `${className}---${modifier}`;
+    return `${className}--${modifier}`;
   }
 };
 

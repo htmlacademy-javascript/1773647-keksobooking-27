@@ -40,4 +40,4 @@ const switchFilterState = createFormSwitcher(filtersForm, ['fieldset', 'selector
 
 const switchAdFormState = createFormSwitcher(adForm);
 
-export{ switchAdFormState, switchFilterState };
+export { switchAdFormState, switchFilterState };
