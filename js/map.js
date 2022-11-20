@@ -1,8 +1,8 @@
 import { setCoordinates } from './ad-form.js';
 import { markUpAd } from './markup-elements.js';
 
-const map = L.map('map-canvas');
 const OFFERS_COUNT = 10;
+const map = L.map('map-canvas');
 
 /** Главная иконка маркера на карте */
 const mainPinIcon = L.icon({

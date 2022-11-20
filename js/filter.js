@@ -2,12 +2,12 @@ import { setAdPins } from './map.js';
 import { switchFilterState } from './page-states.js';
 import { debounce } from './utils.js';
 
+const RERENDER_DELAY = 1000;
+const FILTER_ALL = 'any';
 const priceHousing = {
   MIN: 10000,
   MAX: 50000,
 };
-const RERENDER_DELAY = 1000;
-const FILTER_ALL = 'any';
 
 /** @type {HTMLFormElement} */
 const filterForm = document.querySelector('.map__filters');

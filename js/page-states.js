@@ -8,7 +8,6 @@ const filtersForm = document.querySelector('.map__filters');
  * @param {HTMLFormElement} form
  * @param {boolean} [isDisable = true]
  */
-
 const disableElementForm = (tag, form, isDisable = true) => {
   const elements = form.querySelectorAll(tag);
 
