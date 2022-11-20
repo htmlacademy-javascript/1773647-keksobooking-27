@@ -101,7 +101,7 @@ sliderElement.noUiSlider.on('update', () => {
 
 priceInput.addEventListener('input', ({target: {value}}) => sliderElement.noUiSlider.set(value));
 
-sliderElement.setAttribute('disabled', true);
+sliderElement.setAttribute('disabled', 'true');
 
 sliderElement.removeAttribute('disabled');
 
