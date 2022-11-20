@@ -27,7 +27,7 @@ const showAlert = (message) => {
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 /** Функция для устранения дребезга */
-function debounce (callback, timeoutDelay = 500) {
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
 
   return (...rest) => {
@@ -35,7 +35,7 @@ function debounce (callback, timeoutDelay = 500) {
 
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 /**
  * @param {HTMLElement} block

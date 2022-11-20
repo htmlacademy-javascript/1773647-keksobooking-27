@@ -10,7 +10,6 @@ const roomsToCapacity = {
  * @param {HTMLSelectElement} roomsSelect
  * @param {*} pristine
  */
-
 export const initCapacityAndRooms = (capacitySelect, roomsSelect, pristine) => {
 
   pristine.addValidator(capacitySelect, (value) => {

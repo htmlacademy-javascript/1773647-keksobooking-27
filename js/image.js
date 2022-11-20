@@ -1,3 +1,10 @@
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
+const fileAvatar = document.querySelector('.ad-form__field input[type=file]');
+const previewAvatar = document.querySelector('.ad-form-header__preview');
+const fileChooserZone = document.querySelector('.ad-form__upload input[type=file]');
+const previewZone = document.querySelector('.ad-form__photo');
+
 const createImgForPreview = (previewContainer) => {
   const imgContainer = document.createElement('img');
   imgContainer.setAttribute('alt', 'Выбранная фотография жилья');
@@ -11,13 +18,6 @@ const createImgForPreview = (previewContainer) => {
 
   return imgContainer;
 };
-
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
-const DEFAULT_AVATAR = 'img/muffin-grey.svg';
-const fileAvatar = document.querySelector('.ad-form__field input[type=file]');
-const previewAvatar = document.querySelector('.ad-form-header__preview');
-const fileChooserZone = document.querySelector('.ad-form__upload input[type=file]');
-const previewZone = document.querySelector('.ad-form__photo');
 
 const createPhotoPreview = (fileChooser, previewContainer) => {
   fileChooser.addEventListener('change', () => {

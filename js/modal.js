@@ -1,9 +1,8 @@
 import { isEscEvent } from './utils.js';
 
+const HIDE_DELAY = 5000;
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-
-const HIDE_DELAY = 5000;
 
 /**
  * @param {HTMLElement} element
