@@ -37,4 +37,15 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export { showAlert, isEscEvent, debounce };
+/**
+ * @param {HTMLElement} block
+ * @param {string} modifier
+ */
+const getBEMModifier = (block, modifier) => {
+  if(block.classList.length) {
+    const className = block.classList[0];
+    return `${className}---${modifier}`;
+  }
+};
+
+export { showAlert, isEscEvent, debounce, getBEMModifier };
